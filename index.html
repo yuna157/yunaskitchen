@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f3eb">
+<title>YUNA'S KITCHEN</title>
+<style>
+:root{
+  --bg:#fbfaf7;
+  --card:#ffffff;
+  --ink:#2f3337;
+  --muted:#8a9096;
+  --line:#e8e7e2;
+  --accent:#7898ad;
+  --accent-strong:#5f8198;
+  --accent-soft:#edf5f9;
+  --cream:#f6f1e8;
+  --peach:#f8eee8;
+  --shadow:0 8px 24px rgba(55,67,76,.07);
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:#eef1f1;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:430px;min-height:100dvh;margin:auto;background:var(--bg);position:relative;padding-bottom:82px;box-shadow:0 0 40px rgba(45,56,63,.08)}
+header{padding:30px 22px 14px}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:25px;letter-spacing:.9px;font-weight:500;color:#2d3337}
+main{padding:8px 20px 26px}.page{display:none}.page.active{display:block}
+.search{background:#fff;border:1px solid var(--line);border-radius:18px;padding:13px 15px;display:flex;gap:10px;align-items:center;color:var(--muted);margin-bottom:24px;box-shadow:0 4px 14px rgba(50,60,68,.035)}
+.search input{border:0;outline:0;background:transparent;width:100%;font-size:15px;color:var(--ink)}
+.index-title,.eyebrow{font-size:11px;color:#7f8d96;margin:8px 2px 11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase}
+.index{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.idx{border:1px solid var(--line);background:rgba(255,255,255,.86);border-radius:18px;padding:14px 7px 13px;text-align:center;font-size:13px;color:var(--ink);cursor:pointer;min-height:92px;display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:0 4px 12px rgba(50,60,68,.025);transition:.16s ease}
+.idx:active{transform:scale(.98);background:var(--accent-soft)}
+.idx b{display:block;font-size:25px;margin:0 auto 8px;font-weight:400;background:transparent}
+.section{margin-top:28px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;padding:0 2px}
+.section h2{font-size:12px;letter-spacing:1.45px;margin:0;font-weight:750;color:#667883}.link{font-size:12px;color:var(--accent-strong);cursor:pointer}.section-actions{display:flex;align-items:center;gap:10px}.section-count{font-size:11px;font-weight:600;color:var(--muted);margin-left:5px;letter-spacing:0}.collapse-btn{border:0;background:none;color:var(--muted);font-size:12px;padding:4px 0;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:9px;cursor:pointer;box-shadow:0 4px 14px rgba(50,60,68,.03)}
+.cardtop{display:flex;justify-content:space-between;align-items:flex-start}.name{font-weight:650;font-size:15px;margin-top:1px}.meta{font-size:12px;color:var(--muted);margin-top:6px}.star{font-size:20px;cursor:pointer;color:#e0a84f;line-height:1}
+.empty{padding:28px 10px;text-align:center;color:var(--muted);font-size:13px}.home-collapsed{display:none}.home-list-section .section-head{margin-bottom:0}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);height:72px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);z-index:5;padding-bottom:max(0px,env(safe-area-inset-bottom))}.nav{border:0;background:none;color:#9a9fa3;font-size:12px;font-weight:600;position:relative}.nav span{display:none}.nav.active{color:var(--accent-strong)}.nav.active:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:26px;height:3px;border-radius:0 0 4px 4px;background:var(--accent)}
+.back{border:0;background:none;color:var(--muted);font-size:13px;padding:0 0 15px}.title-row{display:flex;justify-content:space-between;align-items:center}.bigtitle{font-size:24px;font-weight:700;margin:4px 0 8px}.pill{display:inline-block;background:var(--accent-soft);border-radius:99px;padding:6px 10px;font-size:11px;color:var(--accent-strong)}
+.btn{width:100%;border:0;border-radius:14px;background:var(--accent);color:white;padding:14px;margin:16px 0;font-size:14px;font-weight:700;box-shadow:0 5px 14px rgba(100,135,156,.16)}.outline{background:white;color:var(--accent-strong);border:1px solid #cbd9e1;box-shadow:none}
+textarea,input,select{font:inherit}.field{margin:15px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:13px;padding:12px;background:white;outline:none;color:var(--ink)}.field input:focus,.field textarea:focus,.field select:focus{border-color:#b7cad5;box-shadow:0 0 0 3px #eef5f8}textarea{min-height:110px;resize:vertical}
+.listline{display:flex;align-items:center;gap:10px;padding:14px 4px;border-bottom:1px solid var(--line);font-size:14px}.check{width:20px;height:20px;accent-color:var(--accent)}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:16px;box-shadow:0 4px 14px rgba(50,60,68,.03)}.stat small{color:var(--muted)}.stat strong{display:block;font-size:23px;margin-top:7px}.bar{height:8px;background:#edf0f1;border-radius:99px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.recipe-text{white-space:pre-line;line-height:1.8;font-size:14px}.history{font-size:12px;color:var(--muted);line-height:1.9}
+.compact-list-card{padding:14px 4px!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;border-left:0!important;border-right:0!important;border-top:0!important;border-bottom:1px solid var(--line)!important}.compact-list-card .name{font-size:16px!important;font-weight:600!important}.compact-list-card .meta{font-size:12px!important;margin-top:4px!important}
+.todo-add{display:flex;gap:8px;margin:10px 0 16px}.todo-add input{flex:1;min-width:0;border:1px solid var(--line);border-radius:13px;padding:12px;background:white;outline:none}.small-btn{width:auto!important;margin:0!important;padding:10px 15px!important}.todo-row{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:13px 0}.todo-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0}.todo-main span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.todo-delete{border:0;background:none;color:#aaa3a0;font-size:12px;padding:6px 2px;cursor:pointer;flex:none}
+.quick-box{margin:18px 0 20px;padding:15px;background:#f3f7f9;border:1px solid #e4edf1;border-radius:16px}.quick-title{font-size:14px;font-weight:700}.quick-desc{font-size:12px;color:var(--muted);line-height:1.55;margin:5px 0 10px}.quick-input{min-height:130px!important;background:var(--card)!important}.quick-btn{margin:9px 0 0!important;padding:10px!important}.optional{font-weight:400;color:var(--muted)}
+.soft-section-title{margin:26px 0 10px}.soft-section-title .eyebrow{margin:0 0 5px}.soft-section-title h1{margin:0;font-size:23px;letter-spacing:-.4px}
+.stats-section{margin-top:30px}.stats-section + .stats-section{margin-top:38px}.stats-category{padding-top:2px}
+
+.stat.clickable{cursor:pointer;position:relative}.stat.clickable::after{content:'›';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:24px;font-weight:400}.stat-detail{display:none;margin-top:10px;padding:4px 2px 0}.stat-detail.open{display:block}.stat-detail-title{font-size:11px;letter-spacing:.14em;color:var(--muted);font-weight:700;margin:0 0 8px}.stat-detail-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}.stat-detail-row:last-child{border-bottom:0}.stat-detail-row button{border:0;background:none;padding:0;color:var(--ink);font:inherit;text-align:left;cursor:pointer}.stat-detail-row .sub{color:var(--muted);font-size:12px;white-space:nowrap}.stat-detail-more{border:0;background:none;color:var(--accent);font-size:12px;padding:9px 0 0;cursor:pointer}.stats-section-gap{margin-top:34px!important}
+.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}.detail-actions .btn{width:100%;margin:0;padding:11px 10px;border-radius:12px;font-size:13px}.btn-danger{background:#fff5f4!important;color:#c94f49!important;border:1px solid #e7aaa6!important;box-shadow:none!important}.btn-danger:active{background:#fde9e7!important}
+
+.data-section{margin-top:20px}
+.data-desc{font-size:12px;line-height:1.7;color:var(--muted);margin:8px 0 12px}
+.data-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.data-btn{margin:0!important;padding:10px 8px!important;font-size:12px}
+
+</style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#536d87">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="YUNA'S KITCHEN">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+</head>
+<body>
+<div class="app">
+<header><div class="brand">YUNA'S KITCHEN</div></header>
+<main>
+<section id="home" class="page active">
+  <div class="search">🔍 <input id="homeSearch" placeholder="레시피 검색" oninput="searchFromHome()"></div>
+  <div class="index-title">CATEGORIES</div>
+  <div class="index" id="index"></div>
+  <div class="section home-list-section">
+    <div class="section-head">
+      <h2>FAVORITES <span id="favCount" class="section-count"></span></h2>
+      <div class="section-actions">
+        <span class="link" onclick="showRecipes('favorites')">전체보기</span>
+        <button class="collapse-btn" id="favToggle" onclick="toggleHomeSection('favorites')">펼치기</button>
+      </div>
+    </div>
+    <div id="favPreview" class="home-collapsed"></div>
+  </div>
+  <div class="section home-list-section">
+    <div class="section-head">
+      <h2>ALL RECIPES <span id="allCount" class="section-count"></span></h2>
+      <div class="section-actions">
+        <span class="link" onclick="showRecipes('all')">전체보기</span>
+        <button class="collapse-btn" id="allToggle" onclick="toggleHomeSection('all')">펼치기</button>
+      </div>
+    </div>
+    <div id="allPreview" class="home-collapsed"></div>
+  </div>
+
+</section>
+
+<section id="recipes" class="page">
+  <button class="back" onclick="appBack('home')">← HOME</button>
+  <div class="title-row"><div><div class="eyebrow" style="margin:0 0 4px">RECIPES</div><div class="bigtitle">레시피</div></div><button class="btn" style="width:auto;margin:0;padding:9px 14px" onclick="openEditor()">＋ 추가</button></div>
+  <div class="search" style="margin-top:16px"><span>🔍</span><input id="recipeSearch" placeholder="레시피 검색" oninput="renderRecipes()"></div>
+  <div style="display:flex;gap:7px;margin-bottom:14px"><select id="sort" onchange="renderRecipes()" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:white"><option value="new">최신 등록순</option><option value="name">이름순</option><option value="count">많이 해먹은 순</option><option value="recent">최근 해먹은 순</option></select><select id="filter" onchange="renderRecipes()" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:white"></select></div>
+  <div id="recipeList"></div>
+</section>
+
+<section id="detail" class="page"><button class="back" onclick="appBack('recipes')">← RECIPES</button><div id="detailBody"></div></section>
+
+<section id="editor" class="page"><button class="back" onclick="appBack('recipes')">← RECIPES</button><div class="bigtitle" id="editorTitle">레시피 추가</div>
+  <div class="field"><label>요리 이름</label><input id="fName"></div>
+  <div class="field"><label>카테고리</label><select id="fCat"></select></div>
+
+  <div class="quick-box">
+    <div class="quick-title">한 번에 입력</div>
+    <div class="quick-desc">재료와 만드는 법을 구분하지 않고 편하게 적어도 돼요. 아래 버튼을 누르면 재료와 순서대로 정리합니다.</div>
+    <textarea id="fQuick" class="quick-input" placeholder="예) 파스타 200g, 토마토소스, 마늘을 준비한다.&#10;팬에 올리브오일과 마늘을 볶고 토마토소스를 넣는다.&#10;삶은 면을 넣고 2~3분 섞는다."></textarea>
+    <button type="button" class="btn outline quick-btn" onclick="organizeRecipeText()">자동 정리</button>
+  </div>
+
+  <div class="field"><label>재료 <span class="optional">(선택)</span></label><textarea id="fIngredients" placeholder="재료를 한 줄씩 입력하세요"></textarea></div>
+  <div class="field"><label>만드는 법</label><textarea id="fSteps" placeholder="순서대로 입력하세요"></textarea></div>
+  <button class="btn" onclick="saveRecipe()">저장하기</button>
+  <button class="btn outline" id="deleteBtn" style="display:none" onclick="deleteRecipe()">삭제하기</button>
+</section>
+
+<section id="tocook" class="page"><div class="section" style="margin-top:4px"><div class="section-head"><h2>TO COOK</h2></div><div class="todo-add"><input id="todoInput" placeholder="요리 이름 입력"><button class="btn small-btn" onclick="addToCook()">추가</button></div><div id="todo"></div></div><div class="section"><div class="section-head"><h2>COOKED</h2></div><div id="cooked"></div></div></section>
+
+<section id="stats" class="page"><div class="eyebrow" style="margin:4px 0 5px">MY STATS</div><div class="bigtitle">요리 기록</div><div id="statsBody"></div></section>
+</main>
+<nav class="bottom"><button class="nav active" id="navhome" onclick="go('home')">홈</button><button class="nav" id="navcook" onclick="go('tocook')">요리 목록</button><button class="nav" id="navstats" onclick="go('stats')">기록</button></nav>
+</div>
+<script>
+const categories = [
+  ['🍝','파스타'],
+  ['🍜','면요리'],
+  ['🍙','볶음밥·김밥'],
+  ['🍛','덮밥'],
+  ['🍲','찌개'],
+  ['🥘','기타']
+];
+const cats = categories.map(c => c[1]);
+
+const emojis={'파스타':'🍝','면요리':'🍜','볶음밥':'🍳','볶음밥·김밥':'🍙','덮밥':'🍛','찌개':'🍲','기타':'🥘'};
+const importedRecipes = [{"id":1001,"name":"7분 김치찌개","cat":"찌개","ingredients":"재료: 식용유, 대파, 삼겹살, 김치, 양파\n 고춧가루, 설탕, 국간장, 다시다","steps":"1. 식용유 한스푼에 대파를 넣고 파기름을 낸다\n2. 삼겹살을 넣고 익혀준 뒤 잘게 잘라준다\n3. 익은 삼겹살에 고춧가루 1, 설탕 1/2, 국간장 2스푼을 넣고 볶다가 잘게자른 김치와 김치국물, 양파도 같이 넣고 볶는다(다시다도 조금만)\n4. 물 한컵 넣고 팔팔 끓여준다","favorite":false,"count":0,"history":[],"created":20230709},{"id":1002,"name":"간장계란김밥","cat":"볶음밥·김밥","ingredients":"","steps":"1. 계란 두개를 후라이팬에 스크램블 한다\n2. 밥 한공기, 간장 2스푼, 들기름 1스푼, 계란을 넣고 비빈다\n3. 묵은지는 양념을 씻고 물을 꼭 짜서 설탕 조금, 기름 조금 넣고 비벼놓는다\n4. 김 위에 간계밥을 얹고 묵은지도 얹고 말아준다","favorite":false,"count":0,"history":[],"created":20250504},{"id":1003,"name":"간장파스타","cat":"파스타","ingredients":"재료: 마늘, 청양고추, 올리브유, 새우 혹은 소세지\n 소스: 간장 2T, 올리고당or설탕 1T, 참기름 1/2T\n 혹은 간장 1T, 굴소스 1T, 설탕 1/2T, 참기름 1/2T","steps":"마늘-청양고추-새우 혹은 소세지 순으로 볶다가\n새우 혹은 소세지가 어느정도 익으면 면, 면수, 간장소스 넣고 볶기, 마지막 후추 뿌리기","favorite":false,"count":0,"history":[],"created":20220123},{"id":1004,"name":"감자햄비빔밥","cat":"덮밥","ingredients":"재료: 감자, 햄, 파, 고추, 김\n 양념: 간장 1.5T, 참치액 0.5, 실파 3줄기 쫑쫑, 청양고추 1개 쫑쫑, 고춧가루 0.5T, 참기름 0.5T, 들기름 0.5T, 통깨 0.5T, 생수 0.5T","steps":"1. 양념장을 미리 만들어 놓는다.\n2. 감자는 껍질을 벗기고 깍둑썰어 물에 한번 씻어 물기를 빼준다.\n3. 팬을 달군후 물기를 제거한 감자를 넉넉한 기름에 노릇하게 구워 익혀준다.\n4. 감자를 익힌 팬에 햄도 노릇하게 구워준다.\n5. 밥위에 구운 감자와 햄을 올려 양념장을 넣어 비벼준다.\n6. 조미김을 곁들여 먹어도 맛있음","favorite":false,"count":0,"history":[],"created":20240728},{"id":1005,"name":"갓김치파스타(에그누들)","cat":"파스타","ingredients":"재료: 마늘, 페퍼론치노, 갓김치 앞접시 한그릇, 새우\n 소스: 굴소스 1.5T, 간장 0.5T, 연두 0.5T","steps":"1. 갓김치는 씻어서 가위로 적당한 크기로 자른다\n2. 포도씨유에 다진 마늘, 페퍼론치노 볶다가 새우 넣고 볶기\n3. 고추기름 2스푼을 넣고 다시 볶다가\n4. 면수와 면, 위의 소스를 넣고 볶다가\n5. 갓김치 넣고 잠시 볶아준 뒤 후추 뿌려 마무리","favorite":false,"count":0,"history":[],"created":20260820},{"id":1006,"name":"계란찜","cat":"기타","ingredients":"","steps":"1. 계란 4개 풀기\n2. 쇠고기 다시다 1t(연두1T) + 소금 1t + 설탕 1t + 후추 1t + 들기름 1T\n3. 계란물의 약 1.5~2배 물 넣고 섞기\n4. 대파 송송 썬 것 넣고 전자렌지에 7~8분(돌리면서 익었는지 확인)","favorite":false,"count":0,"history":[],"created":20240213},{"id":1007,"name":"고기숙주파스타","cat":"파스타","ingredients":"소스: 간장1.5 굴소스2 설탕1/2 참기름1/2 식초1/2 후추 치킨스톡1/2\n 재료: 양배추, 고기, 숙주","steps":"","favorite":false,"count":0,"history":[],"created":20260111},{"id":1008,"name":"고사리 김 파스타","cat":"파스타","ingredients":"","steps":"1. 올리브오일에 마늘과 페퍼론치노를 볶다가\n2. 고사리를 넣고 같이 볶다가 면과 면수를 넣고 쯔유1, 치킨스톡0.5 정도 넣는다\n3. 조미김 2통을 가위로 잘라 숨을 죽인다\n4. 후추를 잔뜩 뿌려서 마무리","favorite":false,"count":0,"history":[],"created":20250804},{"id":1009,"name":"김버터파스타","cat":"파스타","ingredients":"재료: 리가토니, 버터, 마늘, 바삭하게 구운 깍둑감자, 김밥김 3장, 파마산 치즈, 후추 듬뿍\n 소스: 간장 1작은술 + 액젓 1/4작은술","steps":"1. 감자 1/2~1개를 1cm 정도 크기로 깍둑썰기\n2. 찬물에 10분 정도 담가 전분을 빼고, 물기를 완전히 닦기\n3. 올리브오일에 중약불로 8~10분 정도 노릇하게 굽기\n4. 마지막에 버터 5g을 넣어 코팅하고 소금 약간, 감자는 덜어놓기\n5. 같은 팬에서 마늘 → 버터 → 간장(또는 액젓 약간)\n6. 리가토니 + 면수 넣고 유화\n7. 김과 치즈 넣기\n8. 마지막에 감자를 넣어 20~30초만 버무리기\n9. 위에 김가루를 듬뿍 올리기","favorite":false,"count":0,"history":[],"created":20260809},{"id":1010,"name":"김치말이국수","cat":"면요리","ingredients":"소면 200g 기준\n\n김치 150g\n 올리고당 1/2큰술\n 설탕 2큰술\n 식초 1큰술\n 참기름 1큰술","steps":"위 재료를 조물조물 섞어주고,\ncj 동치미 냉면육수 넣은 국수에 고명으로 얹어주기","favorite":false,"count":0,"history":[],"created":20220909},{"id":1011,"name":"김치볶음밥","cat":"볶음밥·김밥","ingredients":"재료 : 밥, 김치, 비엔나, 대파, 식용유\n 양념 : 알룰로스 1숟갈 or 설탕 0.5숟갈, 고춧가루 1숟갈, 마요네즈 1숟갈, 미원 1티스푼, 간장 0.5숟갈, 굴소스 1숟갈, 순후추 톡톡톡","steps":"1. 김치 1컵(150g) 가위로 잘게 자른 다음, 양념을 같이 넣고 모두 섞어주세요.\n2. 팬에 기름을 두르고 중약불에서 대파를 잘게 썰어 넣고 파기름을 내주세요.\n3. 비엔나를 작게 썰어 넣고 2분간 볶다가, 김치양념을 넣고 2분 볶아주세요.\n4. 밥 1공기(250~300g) 넣고 잘 섞어주며 볶아주면 완성!! 꾹꾹 눌러서 누룽지를 만들어먹어도 진짜 맛있어요.\n• 김가루, 계란프라이, 치즈 등 토핑 올리면 굿굿","favorite":false,"count":0,"history":[],"created":20260720},{"id":1012,"name":"김치전","cat":"기타","ingredients":"재료 : 신김치, 부침가루, 물, 고춧가루, 설탕, 포도씨유, 옥수수콘\n\n부침가루1 : 김치1 : 물0.8\n 3장 나옴!","steps":"1. 김치 한컵을 잘게 썰고 김치국물 한숟갈, 설탕 반스푼, 고추가루 한스푼 섞음(옥수수있으면 설탕을 넣지말고 옥수수와 옥수수캔 국물을 쪼르륵 넣어주고 반죽에서 물을 줄임)\n2. 부침가루 한컵, 물 0.8컵 넣고 반죽 만들어줌\n3. 주..르륵.. 흐를 정도면 오케이\n4. 구워주면 끝","favorite":false,"count":0,"history":[],"created":20201012},{"id":1013,"name":"김치찌개","cat":"찌개","ingredients":"","steps":"1. 김치 반포기를 냄비에 담아주세요.\n2. 참기름 한 큰술 반 , 맛술 한 큰술 반 넣고 김치를 달달 볶아주세요.\n3. 너무 쌘불에 하면 김치가 타므로 중간불에서 약간 약하게 불조절 해 주세요. 이때 물 120ml를 넣어 볶아주시면 더욱 김치숨이 잘 죽어요.\n4. 그 다음 물 550ml 부어주고요.\n5. 고기 200g, 땡초 2/3개 (매운거 싫어하시면 1/3개), 다진 마늘 한 큰술, 대파 많이 넣어주세요.\n6. 그리고 간장 1큰술, 참치액 2큰술, 다시다 1작은술 넣어주고요.\n7. 설탕 1큰술, 간 보고 소금 적당히 넣어주세요.\n8. 그리고 고춧가루 1큰술 넣어주고요.\n9. 그대로 15분 끓여줍니다.","favorite":false,"count":0,"history":[],"created":20260104},{"id":1014,"name":"까르보나라","cat":"파스타","ingredients":"준비: 다진마늘, 양파 1/4 다진것, 베이컨 두 줄 썰기, 버터, 페페론치노 한두알, 올리브유, 후추, 슬라이스치즈, 노른자","steps":"1. 올리브오일 두른 후 마늘-페페론치노(약불)-양파(중불) 순으로 볶다가 소금 살짝, 후추 많이, 버터 반스푼\n2. 마늘이 베이지빛을 띌 때 베이컨 넣기\n3. 어느정도 볶아지면 면수 한국자, 수분 좀 날라간 후 면 넣고 면수 반국자 추가하고 에멀징\n4. 수분이 어느정도 날라가면 슬라이스 치즈 한장, 면수 반국자 넣고 볶기\n5. 면 플레이팅 후 치즈 갈갈, 노른자 하나 올리기","favorite":false,"count":0,"history":[],"created":20210531},{"id":1015,"name":"깻잎냉파스타","cat":"파스타","ingredients":"• 드레싱: 들기름1, 간장1, 매실청1(올리고당1), 식초0.5, 들깻가루1","steps":"• 찬물에 헹군 파스타면에 드레싱을 섞는다.\n• 얇게 썬 깻잎과 김가루를 얹는다.","favorite":false,"count":0,"history":[],"created":20240910},{"id":1016,"name":"깻잎막회","cat":"기타","ingredients":"","steps":"1. 볼에 회, 깻잎, 청양고추를 잘라 넣고\n2. 들기름 듬뿍, 소금, 깨 듬뿍 넣어 비빈다\n3. 조미김, 묵은지, 흰쌀밥과 싸먹는다","favorite":false,"count":0,"history":[],"created":20250426},{"id":1017,"name":"나시고랭","cat":"볶음밥·김밥","ingredients":"재료: 숙주, 새우, 다진마늘, 크러쉬드 레드페퍼, 계란","steps":"1. 팬에 올리브유, 다진마늘 1스푼, 새우 6개 넣고 볶기\n2. 간장 1스푼, 저당 굴소스 1스푼, 스리라차 반스푼, 알룰로스 반스푼, 크러쉬드레드페퍼, 밥넣고 볶기\n3. 한쪽에 밥 몰아놓고 계란 1개 넣어 스크램블\n4. 숙주 넣어 잘라 2분정도 볶다가 후추 뿌리면 완성","favorite":false,"count":0,"history":[],"created":20250623},{"id":1018,"name":"나폴리탄","cat":"파스타","ingredients":"재료: 다진마늘, 비엔나소세지, 버터, 간장, 케찹, 굴소스, 설탕, 올리브유","steps":"1. 올리브유 넉넉하게 두른 후 마늘과 비엔나소세지 편 썬 것 볶기\n2. 노르스름해졌을때 면과 면수, 버터 1큰조각 넣고 볶다가\n3. 케찹3큰술, 굴소스1큰술, 후추 톡톡\n4. 치즈 혹은 계란스크램블, 후라이 얹기 / 때에 따라 양배추, 통조림콘도 같이 넣고 볶기\n맛수령st\n5. 팬에 올리브유 두른 후 마늘 , 비엔나소세지를 볶고, 반으로 가른 방울토마토 5-10개를 손으로 눌러주며 팬에 넣기\n6. 면이 익으면 면과 면수를 함께 넣고\n7. 케찹2 : 마요네즈 1 : 스리라차 1 : 굴소스 1의 비율로 만든 소스를 같이 버무려주고 버터 넣고 후추로 마무리\n8. 계란후라이를 얹어주면 맛있다","favorite":false,"count":0,"history":[],"created":20250212},{"id":1019,"name":"냉라면 & 김라면","cat":"면요리","ingredients":"【재료 · 냉라면】\n재료: 라면, 얼음, 간장, 설탕, 식초, 청양고추\n 소스: 라면스프 반개, 간장 1, 식초 1, 설탕 1, 깨\n\n【만드는 법 · 냉라면】\n1. 위 소스를 물에 개어주고 전자레인지에 30초 데워주기\n2. 면이랑 양념장을 먼저 비벼주고 찬물 130ml 부어줌, 청양고추와 얼음도 넣어줌\n\n【재료 · 김라면】\n재료: 라면, 김 5장, 대파, 청양고추 2개\n\n【만드는 법 · 김라면】\n1. 김은 마른 팬에 구워 잘게 부숴준다\n2. 물 1컵(180g), 분말스프, 진간장 2스푼, 설탕 2스푼 넣어 섞고 전자레인지에 30초 데워준다\n3. 끓인 소스는 식혀둔다\n4. 면을 삶아 찬물에 헹궈 물기를 제거하고,\n5. 그릇에 들기름과 면을 넣고 부숴둔 김과 깻가루를 넣어준다\n6. 식혀 둔 소스를 기호에 맞게 뿌리고 대파, 청양고추를 올려주면 끝","steps":"","favorite":false,"count":0,"history":[],"created":20260729},{"id":1020,"name":"닭갈비","cat":"기타","ingredients":"재료: 닭정육 500g, 양배추, 양파, 깻잎\n 소스: 다진마늘 2T 설탕 2T 고추가루 3T 고추장 1T 간장 3T 참기름 1T 미림 1T 매실액 1T 참치액 1T 카레가루 1/2T 후추 1t 생수 2T 다시다 미원 약간","steps":"1. 닭정육에 앞뒤로 소금, 미림 뿌려 밑간\n2. 달군 팬에 식용유 넣고 닭만 굽는다\n3. 고기가 노릇해지면 양념장을 올려 굽다가 썰어놓은 채소와 양념장을 넣고 볶는다\n4. 고기가 익으면 가위로 잘라준다\n5. 마지막으로 깻잎 넣어 마무리","favorite":false,"count":0,"history":[],"created":20241222},{"id":1021,"name":"닭볶음탕","cat":"기타","ingredients":"재료: 닭, 물 1리터, 양파 한개, 감자 3-5개, 대파, 청양고추, 당면\n 소스(숟가락 기준): 양조간장 8T, 고추가루 5T, 고추장 2T, 다진마늘 1T, 매실청 1T, 설탕 3T, 치킨스톡 2T, 참치액 1T\n ​","steps":"1. 팔팔 끓는 물에 닭고기, 소주 넣고 데치고, 흐르는 물에 깨끗하게 씻어서 물기 빼주기(살에 칼집 내기)\n2. 물 1리터에 닭, 감자, 양파 투하하고 바글바글 끓이기\n3. 어느정도 끓었으면 양념, 청양고추, 대파, 당면넣고 팍팍 졸이기","favorite":false,"count":0,"history":[],"created":20210103},{"id":1022,"name":"대만식 마늘쫑 볶음","cat":"기타","ingredients":"재료: 마늘쫑 한 봉, 고기 200g, 양파 반 개, 파 약간, 페퍼론치노, 굴소스\n\n고기 간: 맛간장 1, 다진마늘 1, 맛술 1-1.5, 가람마살라 분말 3, 크러쉬드 페퍼 약간, 후추 약간","steps":"1. 고기에 고기 간을 해두고 30분~반나절 정도 재워두기\n2. 마늘쫑과 양파를 작게 썰어준다\n3. 팬에 기름을 두르고 파, 페퍼론치노를 넣고 볶아준다\n4. 열이 오르면 마늘쫑을 넣고 볶다가 고기 투하\n5. 고기를 풀어주며 볶다가 양파 투하\n6. 양파 살짝 볶다가 굴소스 2스푼 넣고 볶기\n7. 양상추에 싸서 먹으면 더 맛있다","favorite":false,"count":0,"history":[],"created":20220909},{"id":1023,"name":"대패삼겹덮밥","cat":"덮밥","ingredients":"재료: 밥, 대패삼겹, 파채, 양파, 꽈리고추, 계란, 연겨자\n 소스: 모모야라유 1스푼, 간장 2스푼, 올리고당 1.5스푼, 식초 1.5스푼, 후추듬뿍, 마늘 두톨 다진 것 -> 소스를 가장 먼저 만들고 섞어주기","steps":"1. 밥은 볼에 담는다\n2. 양파 반개 슬라이스, 꽈리고추 4개 반으로 크게 자르기\n3. 오일 반스푼에 대패삼겹 200g 넣어 볶기\n4. 고기가 익으면 양파와 꽈리고추 넣고 중불로 3분간 볶기, 소금 소량과 후추 듬뿍넣어 1분 볶기\n5. 소스를 넣어 소스가 충분히 스며들때까지 볶아준다\n6. 밥 위에 볶은 고기를 얹고, 후추와 깨, 계란노른자, 파채, 연겨자를 얹어준다","favorite":false,"count":0,"history":[],"created":20240217},{"id":1024,"name":"대패삼겹파스타","cat":"파스타","ingredients":"소스: 쯔유1.5T 굴소스1T 미림1/2T","steps":"1. 고추기름 두르고 마늘 볶기\n2. 마늘 노릇해지면 대패삼겹 넣고 볶다가 소금,후추 간\n3. 면수 조금, 면 넣고 소스 넣고 볶기","favorite":false,"count":0,"history":[],"created":20211230},{"id":1025,"name":"돈까스덮밥(2인분)","cat":"덮밥","ingredients":"소스: 큰스푼으로 물6, 간장4, 미림1.5, 설탕1\n 재료: 양파, 돈까스, 계란, 쪽파 혹은 대파","steps":"1. 프라이팬에 소스와 채썬 양파를 넣고 끓인다\n2. 약불로 줄이고 에프에 튀긴 돈까스를 썰어서 프라이팬에 같이 올린다\n3. 계란 4개를 풀어서 돈까스 주위, 위에 뿌리고 뚜껑을 덮는다\n4. 밥위에 얹고 대파 혹은 쪽파 솔솔 뿌려 먹기","favorite":false,"count":0,"history":[],"created":20260530},{"id":1026,"name":"두부새우덮밥","cat":"덮밥","ingredients":"재료: 밥, 두부, 새우\n 소스: 숟가락 기준 간장1, 알룰로스1, 들기름2, 참깨 수북히, 다진마늘 반스푼","steps":"1. 물기 뺀 두부와 새우를 한입크기로 잘라서\n2. 올리브유 두른 후라이팬에 소금, 후추, 파슬리 뿌리고 노릇노릇하게 굽는다\n3. 밥 위에 구운 두부와 새우를 얹고 소스 뿌려서 먹는다","favorite":false,"count":0,"history":[],"created":20260201},{"id":1027,"name":"두부소보로덮밥","cat":"덮밥","ingredients":"","steps":"1. 유지만레시피\n소스: 간장 1-2, 굴소스 1, 알룰로스 0.5, 스리라차 1\n2. 두부 물을 뺀 후 반모를 접시에 담고 전자레인지에 2분간 돌린다\n3. 팬에 두부를 으깨면서 볶다가 수분이 어느정도 날아가면 두부를 밀어놓고 올리브유에 양파를 넣고 볶는다\n4. 2분 정도 볶다가 두부와 함께 섞어서 볶다가 위에 소스를 넣는다\n5. 불을 끄고 참기름 한바퀴 두른 후, 평평하게 펴둔 밥 위에 두부를 올리고 계란노른자도 가운데에 올린다\n6. 소스\n맛간장 2스푼\n미림 1스푼\n설탕 1스푼\n굴소스 1.5스푼\n카레가루 2스푼\n고춧가루 1스푼\n7. 두부는 물을 뺀 후 접시에 담고 전자레인지에 2분간 돌린다(물이 더 빠짐)\n8. 팬에 들기름을 두르고 잘게 자른 파를 볶는다\n9. 팬에 두부를 넣어 잘게 으깨주고 물기가 날라갈때까지 볶는다\n10. 위에서 만든 소스를 넣고 볶는다\n11. 후추를 넣어서 마무리!","favorite":false,"count":0,"history":[],"created":20240427},{"id":1028,"name":"두부조림덮밥","cat":"덮밥","ingredients":"","steps":"1. 두부 깍둑 썰기\n2. 전자레인지에 1분 돌려서 물기 빼기\n3. 두부300g 기준 고춧가루3, 간장3, 참치액2, 알룰로스0.5, 송송 썬 대파를 두부와 함께 비벼주기\n4. 입구를 막고 전자렌지에 2분\n5. 밥에 김가루, 계란후라이, 참기름, 깨 얹어서 먹기","favorite":false,"count":0,"history":[],"created":20260205},{"id":1029,"name":"들깨깻잎파스타","cat":"파스타","ingredients":"【재료 · 우삼겹 버전】\n차돌박이 또는 우삼겹 150g\n들깨가루 2T\n간장 2T\n굴소스 0.5T\n마늘\n깻잎\n후추\n크러쉬드 레드페퍼\n미림\n올리브유\n페퍼론치노\n파스타면\n노른자\n\n【만드는 법 · 우삼겹 버전】\n1. 우삼겹을 미림 넣어서 굽다가 기름을 빼고 올리브유에 마늘, 페퍼론치노를 볶는다.\n2. 삶은 파스타면 넣고 면수 두 국자, 간장, 굴소스, 들깨가루 넣고 면에 소스가 배게 볶는다.\n3. 채썬 깻잎과 노른자를 올린다.\n\n【재료 · 기본 버전】\n올리브유\n마늘\n페퍼론치노\n파스타면\n간장 1\n참치액 1\n알룰로스 1\n들기름 3\n레몬즙 1/3\n김가루\n깻잎\n들깨가루 2스푼\n노른자\n\n【만드는 법 · 기본 버전】\n1. 팬에 올리브유를 두르고 마늘과 페퍼론치노를 볶는다.\n2. 삶은 면을 넣고 간장 1, 참치액 1, 알룰로스 1, 들기름 3, 레몬즙 1/3을 넣고 볶는다.\n3. 김가루, 깻잎, 들깨가루 2스푼, 노른자 올려서 플레이팅한다.\n4. 냉파스타로 해먹어도 맛있음.","steps":"","favorite":false,"count":0,"history":[],"created":20250210},{"id":1030,"name":"땅콩버터비빔면 & 칠리오일누들","cat":"면요리","ingredients":"【재료 · 땅콩버터비빔면】\n대파 2숟갈\n고춧가루 1\n올리브유 3\n굴소스 1\n간장 1\n알룰로스 0.5\n참기름 1\n식초 1\n땅콩버터 1\n쪽파\n통깨\n\n【만드는 법 · 땅콩버터비빔면】\n1. 대파, 고춧가루, 올리브유, 굴소스를 넣고 전자레인지에 1분 돌린다.\n2. 간장, 알룰로스, 참기름, 식초, 땅콩버터를 섞는다.\n3. 삶은 면에 비비고 쪽파와 통깨를 얹어 마무리한다.\n\n【재료 · 칠리오일누들】\n위 소스에서 땅콩버터 제외\n김가루\n쪽파\n\n【만드는 법 · 칠리오일누들】\n1. 땅콩버터를 뺀 소스를 삶은 면에 비빈다.\n2. 김가루와 쪽파를 얹어 마무리한다.","steps":"","favorite":false,"count":0,"history":[],"created":20260809},{"id":1031,"name":"마제소바","cat":"면요리","ingredients":"【재료 · 기본 마제소바】\n파\n부추(혹은 쪽파)\n우동 또는 칼국수면\n돼지고기 다짐육 400g(혹은 두부 으깨서 사용)\n다진마늘\n김\n계란\n오뚜기 고추기름\n순후추\n굴소스\n간장\n맛술(미림)\n식초\n설탕\n면 소스(2인분): 간장 1큰술, 쯔유 3큰술, 설탕 1티스푼, 식초 1스푼, 고추기름 1큰술\n면 소스(1인분): 간장 1큰술, 쯔유 1큰술, 설탕 1티스푼, 식초 1스푼, 고추기름 1큰술\n라오깐마 사용 시 크게 1스푼\n토핑: 볶은 고기, 부추, 파, 김, 다진마늘, 계란 노른자, 순후추\n\n【만드는 법 · 기본 마제소바】\n1. 식용유를 한 바퀴 두르고 다진마늘, 고기 순으로 넣고 볶는다.\n2. 간장 2큰술(처음엔 1~1.5큰술), 굴소스 1큰술, 맛술 1.5큰술, 고추기름 1큰술을 넣는다.\n3. 면에 소스를 비비고 토핑을 올린다.\n\n【재료 · 정호영 레시피】\n소스: 설탕 0.5큰술, 맛술 2큰술, 간장 1.5큰술, 두반장 1스푼, 라조장 2스푼\n다진 돼지고기 300g\n우동 3개\n부추\n쪽파\n대파\n김가루\n달걀 노른자\n통깨\n참기름\n고추기름\n\n【만드는 법 · 정호영 레시피】\n1. 기름을 두르고 다진 돼지고기 300g를 볶는다.\n2. 설탕, 맛술, 간장을 넣고 볶다가 두반장을 넣고 잘 섞으며 볶는다.\n3. 우동 3개를 삶는다.\n4. 부추, 쪽파, 대파를 쫑쫑 썬다.\n5. 그릇에 면을 담고 볶은 고기, 김가루, 부추, 쪽파, 대파를 올린다.\n6. 가운데 달걀 노른자를 올리고 통깨, 참기름, 고추기름을 뿌린다.\n7. 잘 비벼 먹는다.\n\n【재료 · 너구리마제소바】\n올리브유\n고춧가루 2스푼\n다진마늘\n다진고기 300g\n미림 2스푼\n간장 1.5스푼\n너구리스프 1개\n알룰로스(선택)\n면 200g\n쪽파(부추)\n후추\n계란노른자\n김가루\n식초\n\n【만드는 법 · 너구리마제소바】\n1. 팬에 올리브유, 고춧가루 2스푼, 다진마늘을 넣고 볶는다.\n2. 다진고기 300g을 넣고 볶다가 미림 2스푼, 간장 1.5스푼, 너구리스프 1개를 넣고 볶는다. 단맛이 부족하면 알룰로스를 조금 넣는다.\n3. 면 200g을 끓이고 찬물에 헹군 뒤 뜨거운 물로 토렴한다.\n4. 그릇에 면을 담고 쪽파(부추), 다진마늘, 후추, 계란노른자, 김가루를 얹는다. 식초는 취향껏 뿌린다.","steps":"","favorite":false,"count":0,"history":[],"created":20260201},{"id":1032,"name":"만능양념장","cat":"기타","ingredients":"소스: 맛간장 2T, 꽃게액젓 2T, 고춧가루 1T, 참치액 1T, 참기름 1T, 통깨 2T / 다진파 다진마늘 다진청양고추\n\n참치비빔밥, 솥밥 등 곁들이기 좋은 양념장","steps":"","favorite":false,"count":0,"history":[],"created":20230331},{"id":1033,"name":"망난이 떡볶이","cat":"면요리","ingredients":"재료: 떡, 어묵, 소세지, 파\n 소스: 고추장 1, 고춧가루 1, 간장 1, 설탕 1.5, 치킨스톡 1.5, 후추","steps":"1. 물 400ml와 소스를 냄비에 넣고, 파도 같이 끓여준다\n2. 끓으면 어묵과 떡을 넣어서 익힌다\n3. 마지막에 체다치즈, 계란 올리기","favorite":false,"count":0,"history":[],"created":20250210},{"id":1034,"name":"매운꼬치어묵탕","cat":"찌개","ingredients":"재료: 어묵, 청양고추, 우동면\n 소스: 다진마늘 1 스푼\n 고춧가루 2 스푼\n 후추 톡톡 2번\n 간장 2 스푼\n 참치액 1 스푼\n 올리고당 1 스푼\n 다시다 1 티스푼","steps":"1. 물 500ml에 쯔유를 5숟갈 정도 넣고 끓인다\n2. 위 소스를 그릇에 섞어주고 끓는 물에 넣는다\n3. 팔팔 끓으면 젓가락으로 만든 꼬치 어묵을 넣고 조금 끓여주다가 우동면도 넣는다\n4. 청양고추를 잘게 잘라서 넣어주면 완성","favorite":false,"count":0,"history":[],"created":20231217},{"id":1035,"name":"명란무침김밥","cat":"볶음밥·김밥","ingredients":"재료: 백명란, 대파, (청양고추), 고추가루 취향껏, 참기름 넉넉히\n 계란 4알, 기름, 오이 한개 or 오이고추 두개, 밥 한공기, 소금 한꼬집, 참기름 2스푼, 김 2장, 마요네즈","steps":"1. 명란은 잘게 썰어 다진 야채와 고추가루, 참기름에 무쳐 낸다.\n2. 계란은 계란말이로 말아낸다.\n3. 밥은 소금과 참기름으로 밑간한다.\n4. 오이(혹은 오이고추)를 반으로 잘라 속을 파고 명란을 채운다\n5. 김밥으로 말아낸다.","favorite":false,"count":0,"history":[],"created":20260103},{"id":1036,"name":"명란버터우동(파스타)","cat":"파스타","ingredients":"재료: 우동면(파스타면), 명란, 김, 노른자, 쯔유, 버터, 쪽파","steps":"1. 삶은 우동면의 물기를 빼주고 쯔유 한스푼과 버터를 넣고 비빈다\n2. 그 위에 명란, 쪽파, 김가루, 깻잎, 노른자를 얹어고 후추를 뿌려서 비벼먹으면 끝!","favorite":false,"count":0,"history":[],"created":20240419},{"id":1037,"name":"명란버터파스타","cat":"파스타","ingredients":"","steps":"1. 파를 썰고 마늘을 다져둔다\n2. 올리브유에 파를 태우듯이 볶다가, 마늘은 노릇하게 익을 정도만 볶아준다\n3. 볼에 명란, 레몬즙, 와사비를 넣고 섞은 뒤에 완전히 익힌 파스타면을 넣는다\n4. 후라이팬의 내용물에 버터 두덩이를 넣고 녹인 후에, 볼에 버터를 넣고 섞는다\n5. 김가루 얹어서 마무리","favorite":false,"count":0,"history":[],"created":20250427},{"id":1038,"name":"명란젓찜","cat":"기타","ingredients":"재료\n• 백명란 세덩이 정도의 분량\n• 참기름 여섯 숟갈 이상. 콸콸 부어야 맛있어요 (완전 필수)\n• 고춧가루 반숟갈 (살짝 필수)","steps":"• 대파 반숟갈 (고추 넣으면 굳이 없어도 전 괜찮았음)\n• 청양고추 3개 (있으면 확실히 맛있음)\n• 볶은 깨 한숟갈 (있으면 확실히 맛있음)\n방법\n• 명란을 가위로 잘게 자른다\n• 청양고추도 자른다\n• 나머지 재료를 다 넣고 잘 섞어준다\n• 뚜껑 덮고 전자레인지 2분 30초 정도 돌려준다\n• 밥이랑 맛나게 먹는다. 계란찜과 조합 최고","favorite":false,"count":0,"history":[],"created":20241215},{"id":1039,"name":"묵은지 들기름 파스타","cat":"파스타","ingredients":"재료: 마늘, 묵은지, 베이컨, 페퍼론치노, 연두or치킨스톡, 들기름","steps":"1. 편마늘 올리브유에 노릇하게 볶기\n2. 페퍼론치노, 베이컨 넣고 볶다가 묵은지, 올리고당 한쪼록 넣고 볶기\n3. 면수와 면 추가하고 연두 혹은 치킨스톡 넣고 볶기\n4. 후추와 들기름으로 마무리!","favorite":false,"count":0,"history":[],"created":20211107},{"id":1040,"name":"묵은지고등어솥밥","cat":"기타","ingredients":"","steps":"1. 계량컵에 쌀 150ml를 넣고 불려둔다\n2. 물기를 제거한 고등어에 갈릭파우더, 진간장 1, 쯔유 0.5, 알룰로스 0.5, 굴소스 0.5, 맛술1를 섞은 양념장을 앞뒤로 바르고 후라이팬에 굽는다\n3. 솥에 식용유 1스푼, 들기름 2스푼을 넣고 물에 씻어 잘게 썬 묵은지와 설탕을 약간 넣고 달달 볶는다\n4. 불려둔 쌀과 간장1, 쯔유 1스푼을 넣고 볶다가 동량의 물을 넣고(인덕션 6)\n5. 바글바글 끓어오르면 뚜껑 닫고 약불에 10분(인덕션 3), 불끄고 10분 뜸 들이기\n6. 쪽파와 버터를 넣고 고등어를 얹는다","favorite":false,"count":0,"history":[],"created":20250420},{"id":1041,"name":"물만두 양념장","cat":"기타","ingredients":"간장 2스푼, 식초 1/2스푼, 설탕 1스푼, 고춧가루 0.5스푼, 물 6-7스푼","steps":"","favorite":false,"count":0,"history":[],"created":20240217},{"id":1042,"name":"뭄뭄st 바질명란파스타","cat":"파스타","ingredients":"재료: 바질페스토, 명란, 방울토마토, 루꼴라, 후추, 치킨스톡","steps":"1. 팬에 다진마늘, 페퍼론치노를 볶다가 방울토마토도 함께 볶아준다\n2. 팬에 면 넣고 바질페스토, 치킨스톡으로 간 해준뒤\n3. 익히지 않은 명란과 루꼴라를 얹고 후추를 팍팍 뿌려준다!","favorite":false,"count":0,"history":[],"created":20230815},{"id":1043,"name":"미소된장파스타","cat":"파스타","ingredients":"소스: 미소된장 1T, 맛술 2T, 간장 1T, 후추","steps":"1. 돼지고기(목살 혹은 항정살)를 팬에 볶다가 기름을 닦고 양파 반개, 페퍼론치노를 넣고 볶는다\n2. 면, 소스를 넣고 같이 볶아준다\n3. 마지막에 후추 팍팍","favorite":false,"count":0,"history":[],"created":20260217},{"id":1044,"name":"미싸오","cat":"면요리","ingredients":"재료: 에그누들 혹은 라면사리, 새우, 우삼겹, 숙주, 대파, 페페론치노\n 소스: 굴소스 1, 진간장 1, 참치액 1, 스리라차 1, 라임즙 3, 알룰로스 1, 다진마늘 1/2","steps":"","favorite":false,"count":0,"history":[],"created":20260727},{"id":1045,"name":"박막례 간장국수","cat":"면요리","ingredients":"소스: 설탕 3스푼, 간장 3스푼, 다진마늘 1스푼, 식초 적당량, 참기름 넉넉히, 깨\n\n여시 레시피:\n 간장 3, 고춧가루 2, 식초 2, 설탕 1.5, 참기름 3, 통깨, 마늘 1","steps":"","favorite":false,"count":0,"history":[],"created":20240403},{"id":1046,"name":"방울토마토 파스타","cat":"파스타","ingredients":"","steps":"1. 올리브유에 편마늘이랑 크러쉬드페퍼 넣고 볶고, 마늘이 노릇해지면 베이컨 넣기\n2. 방울토마토 반 썬거 10-15개 넣고 으깨면서 볶기\n3. 방토가 뭉근해지면 화이트와인 3큰술, 버터 아빠숟갈로 반스푼 넣고 볶기. 간은 소금 후추, 발사믹 한스푼 반\n4. 면 넣고 볶기\n5. 바질가루, 치즈 갈아넣기","favorite":false,"count":0,"history":[],"created":20210725},{"id":1047,"name":"버섯우유크림파스타","cat":"파스타","ingredients":"","steps":"1. 팬에 올리브유를 두르고 썰어둔 양송이를 볶다가 소금으로 간을 한다\n2. 양송이가 노릇해지면 면, 우유 250ml, 물 300ml, 버터, 슬라이스 치즈를 넣고 끓인다\n3. 갈릭파우더, 후추 등 향신료를 넣고\n4. 불 끄고 마지막에 트러플 오일을 두른다","favorite":false,"count":0,"history":[],"created":20240410},{"id":1048,"name":"버섯파스타","cat":"파스타","ingredients":"재료: 새송이or표고버섯, 마늘, 버터, 페퍼론치노\n 소스: 참기름1 고춧가루0.5 설탕1 간장2 굴소스1 레몬즙2","steps":"1. 다진마늘을 올리브유에 볶다가 버섯도 넣고 볶는다\n2. 버터 넣고 볶다가 면수와 소스도 부어준다\n3. 면과 함께 볶은 뒤 후추, 노른자 마무리","favorite":false,"count":0,"history":[],"created":20260210},{"id":1049,"name":"베이컨덮밥","cat":"덮밥","ingredients":"재료: 베이컨, 계란, 김, 깻잎, 버터","steps":"1. 베이컨 4줄을 끓는물에 데친다\n2. 깻잎은 채썰기\n3. 계란은 후라이 or 스크램블\n4. 팬 위에 데친 베이컨을 잘라 넣고, 버터, 쯔유 2스푼, 물 2스푼 넣고 볶아준다\n5. 밥 위에 채썬 깻잎 얹고 그 위에 베이컨 소스를 쪼로록 올려준다\n6. 그 위에 계란, 김가루 얹기","favorite":false,"count":0,"history":[],"created":20221202},{"id":1050,"name":"볶음우동","cat":"면요리","ingredients":"소스: 굴소스1 간장1 참기름1 고춧가루0.5 설탕0.5","steps":"1. 팬에 식용유 두르고 다진마늘 넣고 볶다가 베이컨(or새우), 양배추 넣고 볶아준다\n2. 삶은 우동사리와 소스 넣고 볶기\n3. 후추 뿌려서 마무리","favorite":false,"count":0,"history":[],"created":20220715},{"id":1051,"name":"봉골레파스타","cat":"파스타","ingredients":"","steps":"1. 올리브오일에 편마늘과 페퍼론치노를 볶는다\n2. 해감한 봉골레를 볶다가 화이트와인을 뿌리고 뚜껑을 덮는다\n3. 중간에 방울토마토를 넣어주고\n4. 조개가 익으면 면과 면수, 치킨스톡 혹은 굴소스로 간 해준뒤\n5. 후추, 바질가루, 치즈를 올려서 마무리한다","favorite":false,"count":0,"history":[],"created":20250510},{"id":1052,"name":"부대찌개","cat":"찌개","ingredients":"재료: 김치, 비엔나소세지, 스팸, 양파 반쪽\n 양념:\n -고추장 한숟갈 가득\n -고춧가루 두숟갈\n -설탕 한숟갈 좀 안되게\n -간장 두숟갈\n -참치액 한숟갈","steps":"-다진마늘 한숟갈 섞어두기\n내용물을 냄비에 담고,\n비비고 사골 한팩+물 250ml 넣어주고\n끓어오르면 양념을 간 봐가며 넣기\n라면, 마지막에 슬라이스 치즈 얹기","favorite":false,"count":0,"history":[],"created":20201211},{"id":1053,"name":"부추무침","cat":"기타","ingredients":"","steps":"1. 부추를 손가락 마디정도로 잘라둔다\n2. 볼에 소스(간장 2, 꽃게액젓 1, 설탕 1, 식초 2, 고춧가루 3, 통깨 1, 참기름 2)를 넣고 섞어준 뒤 잘라둔 부추를 넣고 섞는다","favorite":false,"count":0,"history":[],"created":20260505},{"id":1054,"name":"불구리","cat":"면요리","ingredients":"","steps":"물 650ml, 불닭볶음면 소스 1봉지, 너구리 스프 1/2봉지, 마지막에 들기름 둘러주기","favorite":false,"count":0,"history":[],"created":20240919},{"id":1055,"name":"불닭볶음탕면 떡볶이","cat":"면요리","ingredients":"재료: 대파, 양배추, 어묵, 떡, 비엔나소세지","steps":"1. 냄비에 모든 재료와 코인육수, 불닭볶음탕면 소스, 짜장분말 1스푼, 설탕 반스푼을 넣는다\n2. 물 650미리를 넣고 끓어오르면 면을 넣고 끓인다\n3. 상황에 따라 치즈, 계란, 튀김 등을 곁들인다","favorite":false,"count":0,"history":[],"created":20250503},{"id":1056,"name":"불닭크림짬뽕","cat":"면요리","ingredients":"매콤크림짬뽕\n\n재료\n짬뽕면 혹은 중국당면, 베이컨, 소시지, 양파 1/2개, 생크림, 우유, 체다치즈 2장\n\n만드는 법","steps":"1. 중국당면은 충분히 불려 준비하고, 끓는 물에 끓이기\n2. 오일 두른 팬에 양파 볶다가 노릇해지면 페퍼론치노, 베이컨과 소세지 볶기\n3. 생크림 200ml + 우유 100ml를 넣고 한 번 끓이고 (굴소스 1스푼), 참치액 1스푼, 불닭소스 1스푼 넣기\n4. 면을 넣고 중약불에서 2~3분 끓이면서 소스가 면에 착 붙게 졸이기\n5. 불을 약하게 줄이고 체다치즈 2장을 넣는다\n6. 후추 톡톡 마무리","favorite":false,"count":0,"history":[],"created":20260917},{"id":1057,"name":"브리치즈 파스타","cat":"파스타","ingredients":"","steps":"1. 브리치즈 반개 작게 썰고 토마토 많이 반으로 썰기\n2. 볼에 다진마늘, 브리치즈, 토마토 넣고 올리브오일 많이 뿌리고 소금 후추로 간하기\n3. 오븐에서 20분, 혹은 전자레인지 3분 돌리기\n4. 면과 바질잎 넣어 비비고 후추로 마무리","favorite":false,"count":0,"history":[],"created":20260207},{"id":1058,"name":"비스크 파스타","cat":"파스타","ingredients":"재료: 새우, 파, 토마토(페이스트), 화이트와인, 마늘, 페퍼론치노, 올리브유, 후추\n\n비스크 육수","steps":"1. 올리브유 넉넉히 두르고 새우머리와 껍질 볶기\n2. 화이트와인을 약간 넣어준 뒤, 새우머리를 꾹꾹 눌러 준다\n3. 양파, 파를 넣고 볶다가, 토마토(페이스트)를 넣고 같이 볶아준다\n4. 뜨거운물 400ml를 넣고 팔팔 끓이다가 치킨스톡으로 간을 한다\n5. 물 양이 반으로 줄고 색이 진해지면 체에 걸러준다\n6. 주걱으로 꾹꾹 누르고 체 밑까지 긁어준다\n파스타\n7. 올리브유 두른 팬에 마늘, 페퍼론치노를 넣고 볶는다\n8. 새우살도 같이 넣어 볶다가 비스크 육수를 넣고 면과 에멀징해준다\n9. 끈적해지면 불을 끄고 후추를 뿌려준다","favorite":false,"count":0,"history":[],"created":20230909},{"id":1059,"name":"상하이파스타","cat":"파스타","ingredients":"소스: 굴소스2T, 간장1T, 맛술1T","steps":"1. 고추기름 두른 팬에 다진마늘, 파, 페퍼론치노 볶기\n2. 크러쉬드페퍼, 미림으로 미리 재워둔 새우 넣고 볶기 or 차돌박이 구워두기\n3. 위 양념장을 팬에 넣어준 뒤 면수, 면 넣어주고 후추 뿌려서 마무리","favorite":false,"count":0,"history":[],"created":20260406},{"id":1060,"name":"새송이파스타","cat":"파스타","ingredients":"재료: 새송이, 마늘, 파, 페퍼론치노, 소금, 계란노른자\n 소스: 간장2 참치액1 올리고당1 식초1 후추\n 혹은 간장1.5 쯔유1 올리고당1 레몬즙1 후추 마요네즈1/4","steps":"1. 새송이는 가로로 썰어서 허브솔트 뿌리고 에어프라이어 180도 10분\n2. 포도씨유에 마늘과 파를 볶다가 노릇해지면 페퍼론치노도 같이 넣고 볶는다\n3. 면수 3국자와 면을 넣고 볶다가 소스도 같이 넣어서 볶고, 새송이도 이때 넣고 볶는다\n4. 계란 노른자를 얹으면 완성\n2번소스(새송이버터파스타)\n5. 파 마늘 볶\n6. 페퍼론치노 볶\n7. 깍둑 썬 새송이와 버터, 소금, 후추 넣고 볶\n8. 면수와 소스를 넣고 면 넣어 에멀징\n9. 노른자, 김가루 얹기","favorite":false,"count":0,"history":[],"created":20251211},{"id":1061,"name":"새우 달래 파스타","cat":"파스타","ingredients":"재료: 달래(세발나물 가능), 새우, 마늘, 페퍼론치노\n 소스: 쯔유 2, 간장 1.5, 설탕 0.5, 미림 0.5, 참기름 1, 와사비 0.5\n 소스2: 치킨스톡0.5 간장0.5 쯔유2","steps":"1. 팬에 올리브유를 두르고 마늘, 페퍼론치노를 볶다가 노릇해지면 새우를 넣고 볶는다\n2. 면과 면수, 간장소스를 넣고 에멀징\n3. 한입 크기로 자른 달래를 후추와 함께 면과 비벼준다","favorite":false,"count":0,"history":[],"created":20250323},{"id":1062,"name":"샐러드파스타","cat":"파스타","ingredients":"준비물: 스파게티, 새우, 방울토마토, 옥수수캔","steps":"1. 새우 밑간하기 - 다진마늘, 미림, 소금, 후추\n2. 소스 만들기(2인분) - 간장 3, 올리브오일 2, 식초(또는 레몬즙) 1.5, 설탕 1 혹은 알룰로스 1, 다진마늘 0.5, 깨, 후추\n3. 파스타면은 삶은 뒤 찬물에 헹구고\n4. 큰 볼에 파스타면, 방울토마토, 옥수수통조림, 오이, 새우 토핑, 소스 넣기\n5. 치즈, 후추 갈아서 마무리","favorite":false,"count":0,"history":[],"created":20260717},{"id":1063,"name":"순두부열라면","cat":"면요리","ingredients":"라면 한봉지, 순두부 한개 기준","steps":"1. 기름 두른 팬에 파기름을 낸다\n2. 물 300-350ml를 넣고 끓인다\n3. 스프와 면을 넣고 순두부 부셔지지 않게 넣고, 마지막에 후추 톡톡\n순두부진짬뽕 3개 - 1200ml","favorite":false,"count":0,"history":[],"created":20240919},{"id":1064,"name":"순두부찌개","cat":"찌개","ingredients":"재료: 순두부, 다담 순두부찌개 양념, 파, 양파, 청양고추, 다진마늘, 고춧가루, 계란, 참기름, 다시다, 후추","steps":"1. 식용유 두큰술에 대파, 고춧가루 1.5스푼 넣고 중약불에서 파, 고추기름 충분히 내주기\n2. 파가 노릇해지면 양파, 다진마늘 넣고 볶아주기\n3. 물 210ml, 다담 양념장 넣고 끓이다가\n4. 끓어오르면 다시다 1스푼 or 연두 넣고, 멸치액젓(참치액젓) 1스푼 넣기\n5. 완전 끓어오르면 팽이버섯과 순두부 넣고 끓여주다가, 계란 하나 톡 까넣기\n6. 계란 위에 참기름 쪼록, 청양고추 송송 자른 것 넣고 후추 찹찹","favorite":false,"count":0,"history":[],"created":20230916},{"id":1065,"name":"스테이크 덮밥","cat":"덮밥","ingredients":"재료: 구이용 소고기 400g, 올리브유, 소금, 후추, 양파 반개, 쪽파, 계란 노른자\n 소스: 간장 2T, 미림 1T, 설탕 1/2T, 후추, 버터","steps":"1. 키친타올로 소고기의 핏물을 빼주고, 올리브유, 소금, 후추를 뿌려 마리네이드 한다.\n2. 달궈진 스텐팬에 올리브유를 두르고 소고기를 구워준다.\n3. 소고기가 다 익으면 그릇에 놓고 휴지시켜준다.\n4. 소고기를 구웠던 팬에 소스 재료들을 넣고 잠시 끓이고(3번 과정에서 소고기에서 나온 육즙도 소스에 같이 넣고 끓인다) 잔열로 버터도 녹여준다.\n5. 그릇에 밥을 얹고 슬라이스한 양파, 소고기, 소스를 뿌리고 계란 노른자는 가운데에, 와사비 적당량은 가생이에 놓고 맛있게 먹는다.","favorite":false,"count":0,"history":[],"created":20230122},{"id":1066,"name":"스팸땡초김밥","cat":"볶음밥·김밥","ingredients":"[메인 재료]\n 밥 525g = 2.5공기 스팸 300g\n 청양고추 5개 (취향껏)\n 김\n\n[양념 재료]\n 간장 1\n 굴소스 1\n 설탕 1\n 통깨\n 참기름\n\n[만드는 법]","steps":"1. 청양고추는 잘게 다지고, 스팸은 비닐에 넣어 으깨주세요.\n2. 팬에 스팸을 넣고 수분을 날려가며 노릇해질 때까지 구워주세요.(그래야 김밥이 축축하지 않아요)\n3. 중불로 줄인 뒤 청양고추를 넣고, 양념장을 넣어 짧게 한 번 더 볶 아주세요.\n4. 밥에 스팸, 땡초를 넣고 잘 섞어주세요.\n5. 김 위에 밥을 얇게 펴 바르고 돌돌 말아 참기름 바르고 통깨 뿌리면 완성!","favorite":false,"count":0,"history":[],"created":20260725},{"id":1067,"name":"스페인식 버섯요리","cat":"기타","ingredients":"재료\n• 양송이 버섯, 스팸, 올리브유, 발사믹, 치즈, 크러시드 페퍼, 소금+ 트러플 오일 있음 좋음\n\n요리 순서","steps":"1. 양송이를 씻고 꽁지를 따서 구멍 안에 스팸, 발사믹 한두방울, 크러시드페퍼 약간, 올리브오일(혹은 트러플오일) 한두방울을 넣는다\n2. 위에 치즈와 소금을 살짝 뿌린다 (갈아서 뿌리는 치즈나 피자먹을때 뿌리는 치즈)\n3. 올리브유에 버섯을 구워준다","favorite":false,"count":0,"history":[],"created":20251007},{"id":1068,"name":"시오콘부 파스타","cat":"파스타","ingredients":"재료: 올리브유, 마늘, 시오콘부, 페퍼론치노, 양배추, 새우 혹은 베이컨, 후추","steps":"1. 올리브유 두른 팬에 마늘을 볶다가 페퍼론치노와 양배추를 함께 넣고 볶는다\n2. 새우 혹은 베이컨도 같이 볶다가\n3. 면수 한국자, 면, 시오콘부 2큰술을 넣고 같이 볶는다\n4. 후추 뿌려 완성!\n5. 볼에 시오콘부, 버터, 쯔유 1스푼을 넣는다\n6. 스파게티면을 삶는다.\n7. 달걀은 한 알을 반숙으로 구워 빼두고, 한 알은 튀기듯이 완숙으로 굽는다.\n8. 완숙으로 구워진 달걀은 잘라서 볼에 넣고 소스와 섞어 준다.\n9. 삶아진 스파게티면을 볼에 넣고 버터가 녹을 때까지 섞는다.\n10. 파르미지아노레지아노와 후추를 갈아서 위에 뿌린다.\n11. 그릇에 옮겨 닮고 반숙으로 익혀둔 달걀을 올려준다.","favorite":false,"count":0,"history":[],"created":20240613},{"id":1069,"name":"시오콘부참치김밥","cat":"볶음밥·김밥","ingredients":"","steps":"볼에 밥, 참치 한캔, 시오콘부, 대파 한대 쫑쫑 썬 것, 참기름, 통깨 넣고 비벼서 김에 말기!","favorite":false,"count":0,"history":[],"created":20260405},{"id":1070,"name":"신라면 아부라소바","cat":"면요리","ingredients":"재료: 신라면 건면, 계란, 파or양파, 김가루, 대패삼겹살","steps":"1. 대패삼겹을 빠짝 구워주고, 신라면 건면을 끓여준다\n2. 면 2인분 기준으로 그릇에 라면스프 1개 + 설탕 1스푼 + 간장 1스푼 + 식초 1스푼 + 참기름 1스푼을 넣고 섞어준다\n3. 끓인 면과 면수 한국자를 그릇에 넣고 비빈다\n4. 김가루, 파or양파, 수란을 얹는다\n*전자레인지 수란: 밥공기에 계란을 물에 잠기게 넣은 후 노른자 찔러주고 1분30초 돌리기","favorite":false,"count":0,"history":[],"created":20241012},{"id":1071,"name":"알리오올리오","cat":"파스타","ingredients":"","steps":"1. 물 가득에 소금 한스푼가득 넣어파스타를끓인다\n2. 중약불에 올리브유 많이, 마늘 한주먹가득 편썬것, 베트남고추 8 ~ 10개 정도 넣어 오래동안 마늘향을 낸다.\n3. 파스타 면은 건져 마늘올리브유에 넣어 볶는다.\n4. 생수 한번 쪼로록 넣는다.\n총 넣는 생수가 120ml 정도?\n40ml 정도 넣는다고 생각하자.\n(면수를 넣으면 끈적해 지는 느낌이 싫어서 생수를 넣음)\n5. 치킨스톡 1/2스푼(혹은 참치액 1스푼), 굴소스 반스푼 넣는다\n6. 통후추를 갈고 소금 두꼬집정도 넣는다.\n7. 볶으면서 생수 두번 정도 쪼로록 넣는다.\n(80ml 정도)\n8. 올리브유도 조금 더 넣어준다. (두스푼 정도)\n9. 소스가 잘 달라붙으면 불을 끄고 파마산 가루 1/2 봉지 정도 넣고 통후추도 소량 넣어주고 냄비채로 볶는다.","favorite":false,"count":0,"history":[],"created":20250126},{"id":1072,"name":"앤초비 파스타","cat":"파스타","ingredients":"재료: 앤초비 3-4개, 와일드루꼴라 한줌, 방울토마토 5개, 마늘, 올리브유, 후추, 페퍼론치노, 그라나파다노, 버터, 발사믹, 레몬즙","steps":"1. 와일드루꼴라를 씻고 그릇에 올린 뒤 발사믹식초를 두바퀴 두른다\n2. 팬에 올리브유를 두르고 앤초비필레를 으깨듯이 볶아준다\n3. 앤초비 형체가 없어졌을때 마늘과 페퍼론치노를 약불에서 볶는다\n4. 반 자른 방울토마토의 속을 짜면서 팬에 넣고 볶는다\n5. 면과 면수 한국자를 넣고 볶는다\n6. 레몬즙 한두스푼, 버터 한덩이를 넣고 볶는다\n7. 간을 보고 소금 혹은 치킨스톡으로 추가 간한다\n8. 루꼴라를 담은 그릇 위에 담고 후추와 그라나파다노를 갈면 끝","favorite":false,"count":0,"history":[],"created":20240518},{"id":1073,"name":"야끼파스타","cat":"파스타","ingredients":"소스: 간장 3 식초 4 올리고당 2 스리라차 1 후추\n\n소스2: 간장1 맛술1 굴소스2 스리라차1\n +양배추 마늘에 볶다가 소스 반 넣고 소금 조금\n\n소스3: 간장2 굴소스1 올리고당1 물1(짱구볶음국수)","steps":"1. 버터에 마늘, 페페론치노, 양배추 볶다가\n2. 숨 죽으면 베이컨 볶기\n3. 면수넣고 소스 넣고 면넣기\n4. 마요네즈, 계란후라이 올리기","favorite":false,"count":0,"history":[],"created":20250107},{"id":1074,"name":"양배추 덮밥","cat":"덮밥","ingredients":"","steps":"1. 양배추 채썰기\n2. 식용유 두른 팬에 베이컨 볶다가 양배추 넣고 숨죽을때까지 볶아주기\n3. 굴소스 간에 맞게 넣기\n4. 팬 가운데에 빈 공간을 만들고 계란 까서 익혀주기\n5. 밥에 얹어서 맛있게 냠","favorite":false,"count":0,"history":[],"created":20220715},{"id":1075,"name":"오리부추덮밥","cat":"덮밥","ingredients":"재료: 오리고기, 부추, 양파\n 소스: 부추 100g 기준(2인분) 고춧가루 1스푼, 간장 2스푼, 알룰로스 1.5스푼, 멸치액젓 2스푼, 참기름 2스푼, 깨 톡톡","steps":"1. 부추와 양파를 잘게 썰어 소스와 섞는다\n2. 오리고기를 끓는물에 데친다\n3. 밥 위에 부추양념, 오리고기를 넣어서 비벼먹는다","favorite":false,"count":0,"history":[],"created":20250121},{"id":1076,"name":"오리주물럭","cat":"기타","ingredients":"재료: 오리 1kg, 감자, 대파, 부추, 청양고추\n양념: 고추장 수북하게 3큰술, 고춧가루 수북하게 3큰술, 간장 4큰술, 설탕 3큰술, 맛술 2큰술, 다진마늘 2큰술","steps":"1. 핏물을 뺀 오리고기를 볼에 넣고 양념을 넣고 버무린 뒤 재워둔다\n2. 적당한 두께로 썬 감자 2개를 후라이팬에 깔고 대파를 넣고 오리고기도 넣고 볶는다. 후추도 넣는다\n3. 거의 다 익어가면 청양고추, 부추 넣고 마무리","favorite":false,"count":0,"history":[],"created":20260823},{"id":1077,"name":"오이김비빔밥(면)","cat":"면요리","ingredients":"재료: 오이, 닭가슴살, 김\n 소스: 간장 1, 식초 1, 알룰로스 2/3, 들기름 2, 다진마늘, 통깨","steps":"1. 오이와 닭가슴살을 한입크기로 자른다\n2. 밥 혹은 카펠리니 면 위에 소스와 오이, 닭가슴살, 김을 얹는다\n시오콘부 오이\n속을 파낸 오이를 먹기좋게 자르고\n참기름, 깨, 시오콘부를 넣어 비벼먹는다!","favorite":false,"count":0,"history":[],"created":20250714},{"id":1078,"name":"우삼겹김치파스타(김진순)","cat":"파스타","ingredients":"[재료]\n• 파스타면 150그람\n• 우삼겹 200그람\n• 김치 250그람\n• 편마늘 1/2컵(50그람)\n• 깻잎 3장\n [소스]\n• 올리브오일 1/2컵 _ 들기름 4숟갈\n• 들깨가루 1.5숟갈\n• 꽃소금 한꼬집\n• 굴소스 1/2숟갈\n [레시피]","steps":"1. 팬에 우삼겹 넣고 노릇하게 구워주세요\n2. 우삼겹이 100% 익으면 잠시 뺴주고\n3. 팬에 씻은 김치 넣고 노릇하게 볶아주고, 익으면 김치도 잠시 빼주세요\n4. 팬에 올리브오일 1/2컵 넣고\n5. 편마늘 2컵, 페퍼론치노 1/4숟갈 넣어서\n6. 3분 정도 볶아주고요\n7. 여기에 삶은 파스타면 넣고 면수(파스타 삶은물) 반컵 넣고\n8. 꽃소금 한꼬집, 굴소스 1/2숟갈, 볶은김치 추가해서 한번 섞어주고\n9. 들깨가루 1.5숟갈 넣고 들기름 4숟갈 추가하고 우삼겹, 깻잎 잘게 잘라 올려서 마무리","favorite":false,"count":0,"history":[],"created":20251107},{"id":1079,"name":"우삼겹된장찌개","cat":"찌개","ingredients":"재료: 우삼겹, 감자 1, 양파 반개, 청양고추, 다진마늘, 팽이버섯, 두부, 코인육수, 된장, 맛술, 고춧가루","steps":"1. 냄비에 기름 살짝 두르고 고기 볶기\n(완전 익히지 않아도 돼!)\n2. 맛술 한 숟가락 넣어줘\n3. 볶던 고기에 감자, 양파 넣고 더 볶아주기\n4. 야채숨이 살짝 죽었을때 된장 2-3숟가락, 다진마늘 1숟가락 넣고 볶다가\n5. 고춧가루 1숟가락, 코인육수와 물 500ml 넣고\n6. 마지막에 팽이버섯, 청양고추, 두부 반모 넣고\n중약불로 짜글짜글짜글 끓이기\n정호영레시피\n7. 차돌박이 200g 넣고 볶다가 다진마늘 넣고\n8. 된장 2T, 고추장 1T 넣고 볶아준다\n9. 약불로 고기기름이 올라올때까지 볶다가 고춧가루 넣고 볶기\n10. 물 500ml, 굴소스 1T, 참치액젓 1T 넣기\n11. 대파, 팽이버섯, 두부 넣고 자작하게 끓인다","favorite":false,"count":0,"history":[],"created":20260402},{"id":1080,"name":"우삼겹숙주파스타","cat":"파스타","ingredients":"소스: 간장1 굴소스2 돈까스소스2 미림1","steps":"1. 올리브유를 조금 두른 팬에 마늘과 페퍼론치노를 넣고 볶는다\n2. 노릇해지면 우삼겹을 넣고 익으면 숙주와 면, 소스를 함께 넣는다\n3. 마지막으로 후추를 뿌린다","favorite":false,"count":0,"history":[],"created":20240927},{"id":1081,"name":"원팬 짬뽕파스타","cat":"파스타","ingredients":"","steps":"1. 알배추 얇게, 청양고추, 대파 많이, 양파 반개, 토마토 10개 썰어서 준비\n2. 팬에 파스타면, 위에 재료들 넣고\n3. 올리브유 2, 간장 1, 참치액 1, 치킨스톡 1, 고춧가루 2, 코인육수 1알, 물 800ml 넣고 10분간 끓인다\n4. 면 익힘 상태 확인하고 새우 버섯 넣어 3분 더 끓인다","favorite":false,"count":0,"history":[],"created":20260202},{"id":1082,"name":"원팬김밥","cat":"볶음밥·김밥","ingredients":"#재료\n• 밥 200그람\n• 김 2장\n• 맛살 3줄\n• 햄 3줄\n• 부추 조금\n• 계란 5개\n• 단무지 4줄\n\n#소스\n• 참기름 1숟갈\n• 볶은깨 1/3숟갈\n• 맛소금 1/6숟갈\n\n#레시피","steps":"1. 팬에 식용유 두르고 얇은 두께로 잘라 3등분한 햄, 맛살 넣고\n2. 맛소금 한꼬집 넣어서 2분 볶아준 다음\n3. 3등분한 부추 추가해주고\n4. 계란 5개 까주세요! (그대로 까서 슥슥 퍼지게 해주세요)\n5. 바닥면이 노릇하게 익으면 슉 뒤집어주세요\n6. 반대편까지 노릇하게 익으면 잠시 식혀두고\n7. 밥에 참기름 1숟갈, 볶은깨 1/3숟갈, 맛소금 1/6숟갈 넣어서 밑간 해주세요!\n8. 김한장 깔아서 밥 반공기 올려 펼처주고\n9. 계란전 반개 올리고\n10. 단무지 2줄 올려서 돌돌돌 말아주다가\n11. 끄트머리에 물 묻혀서 끝까지 말면 완성!","favorite":false,"count":0,"history":[],"created":20251107},{"id":1083,"name":"유지만 부추(쪽파)참치김밥","cat":"볶음밥·김밥","ingredients":"재료(1인분, 2줄): 김밥김, 밥, 참치, 부추 혹은 쪽파","steps":"1. 밥 한공기에 쫑쫑 썬 부추나 쪽파, 청양고추, 깨, 참기름, 소금을 넣고 비벼놓는다\n2. 참치는 기름을 따라내고 마요네즈 1, 스리라차 2, 알룰로스 1, 후추 톡톡 해서 비벼둔다\n3. 김밥김에 밥을 깔고 가운데에 참치를 넣고 말아준다. 김 위에 기름도 발라준다\n4. 2줄 나옴!","favorite":false,"count":0,"history":[],"created":20250408},{"id":1084,"name":"일본식 파스타","cat":"파스타","ingredients":"재료: 토핑(새우, 베이컨 등), 마늘, 페퍼론치노, 파, 노른자","steps":"1. 올리브유에 마늘을 볶다가 새우도 넣고 볶아준다\n2. 삶은 파스면을 넣고, 쯔유 1스푼, 굴소스 1스푼, 간장 1스푼, 마요네즈 1스푼을 넣고 물기가 없어질때 까지 볶는다\n3. 마지막에 다진 파와 노른자, 후추 뿌려주기\n4. 야끼소바 맛을 원하면 식초, 설탕 1스푼 추가, 마요네즈는 마지막에","favorite":false,"count":0,"history":[],"created":20231105},{"id":1085,"name":"짬뽕파스타","cat":"파스타","ingredients":"재료: 다진마늘, 양파, 파, 페퍼론치노, 새우 4마리, 고추기름\n 소스: 고춧가루2 간장1 굴소스1 치킨스톡0.5 후추 다시다0.3","steps":"1. 고추기름 두른 팬에 다진마늘, 양파, 파, 페퍼론치노를 넣고 볶다가 새우도 같이 넣어 볶는다(고춧가루도 추가)\n2. 재료를 구석으로 몰아두고 간장 1스푼을 팬에 태운다\n3. 면수 네국자 넣고 굴소스, 치킨스톡 넣기\n4. 후추 듬뿍 뿌려 마무리","favorite":false,"count":0,"history":[],"created":20241012},{"id":1086,"name":"천연위고비","cat":"기타","ingredients":"","steps":"1. 작은 냄비에 계란 넣고 인덕션 8, 타이머 7분\n2. 올리브유, 소금, 후추","favorite":false,"count":0,"history":[],"created":20260528},{"id":1087,"name":"초당옥수수할라피뇨파스타","cat":"파스타","ingredients":"재료: 초당옥수수, 할라피뇨, 양파, 페페론치노, 올리브오일, 버터, 다진 마늘, 치킨스톡, 소금\n\n만들기 (1인준 기준)","steps":"1. 올리브오일을 두르고 다진 양파를 볶는다.\n2. 양파가 투명해지기 시작하면 할라피뇨 많이, 초당옥수수 1개, 페페론치노 1개, 다진마늘과 버터 한 스푼씩, 비엔나소세지2개or베이컨, 소금 약간 넣고 볶는다\n3. 파스타면, 면수 종이컵 반 컵, 치킨스톡 반 스푼 넣고 볶는다.\n4. 후추 뿌려서 마무리","favorite":false,"count":0,"history":[],"created":20250622},{"id":1088,"name":"치킨마요","cat":"덮밥","ingredients":"소스 : 간장 1큰술, 굴소스 2/3큰술, 맛술 2큰술, 올리고당 1큰술 - 전자레인지 30초 돌린 후 후추 약간, 발사믹식초 반큰술","steps":"1. 치킨을 에어프라이어에 200도 10분 돌린다\n2. 계란 세개를 풀어 맛술 반큰술, 소금 약간을 넣고 버터 두른 팬에 스크램블한다\n3. 밥을 깔고 소스 적당량, 계란 스크램블, 치킨, 쪽파, 김가루, 마요네즈를 올린다","favorite":false,"count":0,"history":[],"created":20220521},{"id":1089,"name":"크림진짬뽕","cat":"면요리","ingredients":"","steps":"1. 기름두르고 우삼겹 양파반개 고춧가루1T 다진마늘0.5T 후추팍팍 쳐서 볶기\n2. 양파 노릇해지면 물200ml 우유200ml 붓고 진짬뽕 면이랑 스프 싹다넣고 5-6분 끓이기\n3. 청양고추한줌 슬라이스치즈1장 넣고 1분쯤 더 끓이면 끝\n페퍼론치노 추가하면 더 얼큰해짐!!","favorite":false,"count":0,"history":[],"created":20260704},{"id":1090,"name":"토마토비빔밥","cat":"덮밥","ingredients":"재료: 방울토마토, 김, 참기름, 고추장, 계란","steps":"1. 볼에 잘게 썬 방토와 밥, 김가루, 참기름, 고추장을 넣고 비빈다(청양고추는 옵션)\n2. 계란후라이를 얹는다","favorite":false,"count":0,"history":[],"created":20230817},{"id":1091,"name":"토마토해장파스타","cat":"파스타","ingredients":"재료: 토마토소스, 올리브유, 마늘, 페퍼론치노, 고춧가루, 새우, 화이트와인","steps":"1. 올리브유 두른 팬에 마늘을 볶다가 페퍼론치노도 부셔서 같이 볶는다\n2. 새우도 함께 볶다가 화이트와인을 넣고 불을 세게 올린다\n3. 물기가 조금 없어졌을때 고춧가루 맵게 먹고싶은 만큼 넣고 볶는다\n4. 토마토소스 넣은 뒤 치킨스톡으로 간하고 면수, 면 넣어 볶는다\n여시레시피\n5. 올리브유 두른 팬에 마늘과 양파를 볶는다\n6. 고춧가루를 넣고 고추기름을 낸 뒤 새우도 함께 볶다가 한쪽에 간장 한스푼을 태운다\n7. 면수를 총 양의 반정도 넣고 토마토소스 3-4스푼을 넣고 끓이다가\n8. 면과 나머지 면수를 넣고 팔팔 끓이다가 간을 보고 굴소스를 넣는다\n9. 후추 팍팍 넣어 마무리","favorite":false,"count":0,"history":[],"created":20250215},{"id":1092,"name":"톳파스타","cat":"파스타","ingredients":"소스: 쯔유 3T 참치액 1T 미림 3T","steps":"1. 다진마늘, 양파, 톳, 크러쉬드페퍼 넣고 볶기\n2. 면수 듬뿍, 면 넣고 소스 넣고 볶다가 마지막에 버터 한조각, 플레이팅 후 후추","favorite":false,"count":0,"history":[],"created":20211204},{"id":1093,"name":"투움바파스타","cat":"파스타","ingredients":"[ 재료 ] 1serving\n• 파스타 페투치네 : 100g, (쥐었을때 지름 2cm)\n• 생크림 : 200ml\n• 양송이버섯 : 4~5개 (실한놈으로)\n• 새우 : 4~5개 (중사이즈)\n• 쪽파 : 1Tbsp\n• 버터 : 50g\n• 케첩 : 1/2 tsp\n• 파우더 4종 : 파프리카(12 tsp) 혹은 고춧가루, 양파(1/4 tsp 절반, 즉 18 tsp), 마늘(1/4 tsp), 치킨(1/2 tsp) - 치킨스톡 대체 가능\n• 소금, 후추 : 각 1/4 tsp\n• 파르미지아노 레지아노 : 취향대로","steps":"1. 새우를 소금물에 해동시킨다\n2. 양송이는 한입크기로 잘라준다\n3. 알프레도 소스 - 생크림 200ml에 어니언 파우더, 갈릭파우더, 파프리카파우더 혹은 고춧가루를 넣고 소금 후추를 넣는다\n4. 약불에 버터를 녹이고 새우가 반투명해질때까지 볶는다\n5. 케첩 1스푼을 넣고 새우가 코팅될정도로만 볶다가 양송이를 넣고 숨이 약간 죽을정도로 볶는다\n6. 알프레도 소스를 넣고 쪽파 한줌을 넣는다\n7. 약불에서 면을 넣고 약간만 볶아준다(졸지않도록)\n8. 파르미지아노 레지아노를 뿌려서 마무리","favorite":false,"count":0,"history":[],"created":20250807},{"id":1094,"name":"파브리 계란파스타","cat":"파스타","ingredients":"","steps":"1. 올리브유에 편마늘과 페퍼론치노, 베이컨을 볶는다\n2. 마늘이 노릇하게 익으면 모든 재료를 빼고 계란 3개를 넣고 흰자만 볶고 노른자는 살려둔다\n3. 면이 다 익으면 후라이팬 불을 끄고 면수와 면을 넣고 비빈다\n4. 명란젓 혹은 간장 등으로 간을 한다\n5. 마늘과 베이컨을 같이 넣고 후추 듬뿍, 치즈갈갈해서 먹는다","favorite":false,"count":0,"history":[],"created":20251023},{"id":1095,"name":"팟타이 파스타","cat":"파스타","ingredients":"재료: 숙주, 새우, 다진마늘, 페퍼론치노, 계란\n 소스: 간장1, 액젓1, 식초1, 굴소스 0.5, 땅콩버터 1(없으면 즈마장+올리고당1), 레몬즙 1\n 소스2: 설탕1 물5 레몬즙2 액젓1 굴소스2작은술","steps":"1. 포도씨유 두른 팬에 다진마늘과 페퍼론치노를 넣고 볶다가\n2. 새우 넣고 볶다가 익으면 한쪽에 계란을 스크램블 해준다\n3. 면과 면수(면수는 조금만, 숙주에서 물이 나옴)를 넣고 볶다가 숙주와 소스를 넣고 다시 볶아준다\n4. 마지막으로 후추와 레몬즙을 뿌린다","favorite":false,"count":0,"history":[],"created":20240926},{"id":1096,"name":"페퍼런치","cat":"볶음밥·김밥","ingredients":"2인분\n\n소스(이러면 조금 남음)\n 진간장(샘표 F3) 15g\n 미림(롯데) 10g\n 사양벌꿀 15g\n 돈까스소스(오뚜기) 5g\n 굴소스(이금기) 8g\n 다진 마늘(풀무원) 6g\n 다시다 3g\n\n혹은\n\n간장1 맛술1 알룰로스1 굴소스0.5 다진마늘1","steps":"1. 팬에 버터를 녹인다\n2. 밥과 스위트콘 한통, 대파 썬 것도 넣고 소스와 함께 볶는다\n3. 소고기는 따로 구워준다\n4. 후추를 겁나 많이 뿌려준다","favorite":false,"count":0,"history":[],"created":20260726},{"id":1097,"name":"할라피뇨 파스타","cat":"파스타","ingredients":"재료: 다진마늘, 페퍼론치노, 할라피뇨, 베이컨\n 소스: 쯔유1 미림1 후추","steps":"1. 올리브오일 두른 팬에 다진마늘, 페퍼론치노를 넣고 볶다가 다진 할라피뇨와 베이컨도 같이 넣어 볶는다\n2. 면수, 면 넣고 쯔유 1스푼, 미림 1스푼\n3. 후추 듬뿍 뿌려 마무리","favorite":false,"count":0,"history":[],"created":20221116},{"id":1098,"name":"해쭈 버터마늘간장파스타","cat":"파스타","ingredients":"재료: 방울토마토, 면, 마늘, 버터, 올리브유, 후추, 쪽파\n 소스: 간장 1T, 굴소스 0.5T","steps":"1. 방울토마토는 반 잘라서 10-15개 준비, 쪽파도 쫑쫑 썰어준다\n2. 팬에 버터를 두르고 다진마늘 넣고 볶다가 올리브유를 추가, 방울토마토도 넣고 볶는다\n3. 간장과 굴소스를 넣고 볶다가\n4. 면 넣고 소스가 스며들도록 볶는다\n5. 쪽파 후추 파마산치즈를 얹으면 끝","favorite":false,"count":0,"history":[],"created":20260627},{"id":1099,"name":"혜니쿡 스키야키","cat":"찌개","ingredients":"[2인분]재료: 4mm 한우 300g, 대파, 알배추, 양파, 쑥갓, 버섯, 두부, 계란, 쯔유, 간장, 알룰로스, 식초, 다시마, 물, 올리브오일","steps":"1. 타래 소스를 먼저 만들어 줍니다. 냄비에 [쯔유 50ml, 간장 20ml, 물 50ml, 알룰로스 1T, 식초 2/3T, 조각다시마 세장] 을 한번에 넣은 후 약불로 켜고 그대로 10분간 끓여줍니다. 10 분이 지나면 다시마를 건진 후 조금씩 따라 쓰기 편한 소스볼 에 옮겨둡니다.\n• 2배 쯔유 사용했으며 간장은 국간장 제외 양조, 진간장, 맛간장 모두 무관합니다.\n2. 알배추 250g, 대파 뿌리부분 180g, 양파 반개, 쑥갓, 버섯 준비해주세요.\n3. 알배추는 2.5cm 두께로 잘라주시고 대파는 3-4cm 두께로 댕강 잘라줍니다. 양파 반개는 슬라이스 해주세요. 쑥갓은 약간의 향만 더하기 위해 세줄기 5cm 크기로 잘라주었습니다. 버섯은 한줌가량 먹기 편한 크기로 찢어주세요.\n4. 채소 준비가 끝나면 팬에 두부 반모를 오일을 두른 후 따로 노릇하게 구워 준비해주세요. 그동안 4mm 고기 역시 먹기 좋은 크기로 잘라줍니다.\n5. 냄비에 올리브오일을 얇게 두르고 예열한 후 약불에서 대파, 양파, 알배추 비교적 단단한 채소들을 먼저 구워줍니다. 한 번에 재료를 모두 넣지 마시고 준비한 전체 양 중 1/4-1/3만큼 소량씩 넣어주세요. 약불에서 대파 색이 날 수 있도록 은은하 게 천천히 구워주세요. 양파와 알배추는 중간중간 뒤적뒤적 해주시고요.\n6. 대파 색이 노릇하게 나면 채소를 더 가장자리로 바짝 밀어 두고 가운데로 고기 몇점을 얹고 그 위로 타래소스를 끼얹어줍 니다. 그리고 중강불로 올리신 후 소스가 졸아들며 고기와 옆 에 채소에 잘 스며들 수 있게 뒤적뒤적해주세요.\n7. 개인 그릇에 계란 한알(노른자 흰자 포함 전란) 곱게 풀어주신 후 채소와 고기 날계란에 듬뿍 찍어드시면 됩니다.\n8. 이렇게 배추와 대파 양파 등 단단한 채소들 먼저 고기와 드시고 중간중간 버섯과 쑥갓 함께 곁들여 바로 익혀 바로 드셔 주시면 됩니다.\n9. 드실 땐 꼭 인덕션이나 버너 주위로 둘러 앉아 채 소, 고기, 타래소스 무한리필 해가며 한두번 드실 양만큼 맛있 게 구워드시길 추천드려요. 마무리로 육수(어떤 육수건 괜찮아 요.)를 붓고 취향에 따라 우동면이나 곤약면으로 식사 마치시 면 더 좋고요.","favorite":false,"count":0,"history":[],"created":20260822},{"id":1100,"name":"훈제오리깻잎샐러드파스타","cat":"파스타","ingredients":"소스: 면 120g에 간장 2, 알룰로스 1(설탕 0.5), 들기름 1\n 혹은 간장 1 들기름 2 쯔유0.5 식초 0.5","steps":"1. 삶은 면의 물기를 다 털어주고 소스와 섞는다\n2. 통들깨, 없으면 후추와 깨 넣고 섞는다\n3. 깻잎 한줌, 다진 청양고추, 구워뒀던 훈제오리, 김가루, 부신 깨 넣고 비벼먹는다","favorite":false,"count":0,"history":[],"created":20260531}]
+
+// 100개 레시피 묶음으로 1회 완전 교체합니다. 이후 사용자가 수정한 내용은 그대로 유지됩니다.
+const DATASET_VERSION='recipes-100-20260921-pwa-v1';
+if(localStorage.getItem('yk_dataset_version')!==DATASET_VERSION){
+  localStorage.setItem('yk_recipes',JSON.stringify(importedRecipes.map(r=>({...r,history:[...(r.history||[])]}))));
+  localStorage.setItem('yk_tocook',JSON.stringify([{"id":"todo_1789956366258","name":"지지고","recipeId":null,"done":false},{"id":"todo_1789956369767","name":"상하이파스타","recipeId":null,"done":false},{"id":"todo_1789956374288","name":"야끼파스타","recipeId":null,"done":false}]));
+  localStorage.setItem('yk_dataset_version',DATASET_VERSION);
+}
+let recipes=JSON.parse(localStorage.getItem('yk_recipes')||'[]')||[];
+let tocook=JSON.parse(localStorage.getItem('yk_tocook')||'[]')||[];
+// 이전 버전의 라면/기타 면요리는 새 카테고리인 면요리로 통합
+recipes.forEach(r=>{ if(r.cat==='라면' || r.cat==='기타 면요리') r.cat='면요리'; });
+let editId=null;
+function save(){localStorage.setItem('yk_recipes',JSON.stringify(recipes));localStorage.setItem('yk_tocook',JSON.stringify(tocook))}
+function catEmoji(c){return emojis[c]||'🍳'}
+function init(){
+ document.getElementById('index').innerHTML=categories.map(([emoji,name])=>`<div class="idx" onclick="showRecipes('${name}')"><b>${emoji || '•'}</b>${name}</div>`).join('');
+ document.getElementById('filter').innerHTML='<option value="all">전체 카테고리</option>'+cats.map(c=>`<option>${c}</option>`).join('');
+ document.getElementById('fCat').innerHTML=cats.map(c=>`<option>${c}</option>`).join('');
+ renderHome();renderRecipes();renderCook();renderStats();
+}
+function renderPage(id){
+ const page=document.getElementById(id)||document.getElementById('home');
+ id=page.id;
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ page.classList.add('active');
+ document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));
+ if(id==='home')navhome.classList.add('active');
+ if(id==='tocook')navcook.classList.add('active');
+ if(id==='stats')navstats.classList.add('active');
+ window.scrollTo(0,0);
+ if(id==='home')renderHome();
+ if(id==='tocook')renderCook();
+ if(id==='stats')renderStats();
+}
+function go(id,opts={}){
+ const current=document.querySelector('.page.active')?.id||'home';
+ if(current===id){ renderPage(id); return; }
+ renderPage(id);
+ if(!opts.fromHistory){
+   const depth=(history.state&&history.state.ykDepth||0)+1;
+   history.pushState({ykApp:true,ykPage:id,ykDepth:depth},'',location.href);
+ }
+}
+function appBack(fallback='home'){
+ const st=history.state;
+ if(st&&st.ykApp&&Number(st.ykDepth||0)>0) history.back();
+ else renderPage(fallback);
+}
+window.addEventListener('popstate',e=>{
+ const st=e.state;
+ if(st&&st.ykApp) renderPage(st.ykPage||'home');
+ else renderPage('home');
+});
+function card(r){return `<div class="card compact-list-card" onclick="detail(${r.id})"><div class="cardtop"><div><div class="name">${esc(r.name)}</div><div class="meta">${esc(r.cat)} · ${r.count}회</div></div><div class="star" onclick="event.stopPropagation();toggleFav(${r.id})">${r.favorite?'★':'☆'}</div></div></div>`}
+const homeSectionState={favorites:false,all:false};
+function renderHome(){
+  const favs=recipes.filter(r=>r.favorite);
+  const favOpen=homeSectionState.favorites;
+  const allOpen=homeSectionState.all;
+
+  favCount.textContent=`${favs.length}`;
+  allCount.textContent=`${recipes.length}`;
+
+  favPreview.innerHTML=favs.length
+    ? (favOpen ? favs.map(card).join('') : '')
+    : '<div class="empty">아직 즐겨찾기한 레시피가 없어요.</div>';
+
+  allPreview.innerHTML=allOpen
+    ? (recipes.map(card).join('')||'<div class="empty">레시피가 없습니다.</div>')
+    : '';
+
+  favPreview.classList.toggle('home-collapsed',!favOpen);
+  allPreview.classList.toggle('home-collapsed',!allOpen);
+  favToggle.textContent=favOpen?'접기':'펼치기';
+  allToggle.textContent=allOpen?'접기':'펼치기';
+}
+function toggleHomeSection(type){
+  homeSectionState[type]=!homeSectionState[type];
+  renderHome();
+}
+function showRecipes(filter='all'){go('recipes');document.getElementById('filter').value=cats.includes(filter)?filter:'all';renderRecipes();if(filter==='favorites')document.getElementById('filter').value='all'}
+function renderRecipes(){
+ let q=(recipeSearch.value||'').toLowerCase(), f=filter.value, arr=recipes.filter(r=>(f==='all'||r.cat===f)&&(r.name.toLowerCase().includes(q)||r.ingredients.toLowerCase().includes(q)));if(document.getElementById('favoriteMode')){}
+ if(window.currentFav){arr=recipes.filter(r=>r.favorite);window.currentFav=false}
+ let s=sort.value;if(s==='name')arr.sort((a,b)=>a.name.localeCompare(b.name));if(s==='count')arr.sort((a,b)=>b.count-a.count);if(s==='recent')arr.sort((a,b)=>(b.history[0]||'').localeCompare(a.history[0]||''));if(s==='new')arr.sort((a,b)=>b.created-a.created);
+ recipeList.innerHTML=arr.map(card).join('')||'<div class="empty">레시피가 없습니다.</div>'
+}
+function nlHtml(value){
+  const normalized=String(value||'').replace(/\\\\n/g,'\\n');
+  return esc(normalized).replace(/\\n/g,'<br>');
+}
+function recipeHtml(value){
+  const normalized=String(value||'').replace(/\\n/g,'\n');
+  return normalized.split(/\n/).map(line=>{
+    const m=line.trim().match(/^【(.+)】$/);
+    return m?`<span class="recipe-subhead">${esc(m[1])}</span>`:esc(line);
+  }).join('<br>');
+}
+function detail(id){
+  let r=recipes.find(x=>x.id===id);
+  detailBody.innerHTML=`<div class="title-row"><div><div class="bigtitle">${esc(r.name)}</div><span class="pill">${esc(r.cat)}</span></div><div class="star" onclick="toggleFav(${r.id});detail(${r.id})">${r.favorite?'★':'☆'}</div></div>
+  <div class="meta" style="margin-top:14px">${r.count}회 해먹음</div>
+  <button class="btn" onclick="cooked(${r.id})">해먹었어요!</button>
+  ${(!r.steps && String(r.ingredients||'').includes('【재료 ·'))
+    ? `<div class="section"><h2>레시피</h2><div class="recipe-text">${recipeHtml(r.ingredients)}</div></div>`
+    : `<div class="section"><h2>재료</h2><div class="recipe-text">${recipeHtml(r.ingredients)||'재료가 입력되지 않았어요.'}</div></div><div class="section"><h2>만드는 법</h2><div class="recipe-text">${recipeHtml(r.steps)||'만드는 법이 입력되지 않았어요.'}</div></div>`}
+  <div class="section"><h2>조리 기록</h2><div class="history">${r.history.length?nlHtml(r.history.join('\\n')):'아직 기록이 없습니다.'}</div></div>
+  <div class="detail-actions">
+    <button class="btn outline" onclick="openEditor(${r.id})">수정</button>
+    <button class="btn btn-danger" onclick="deleteRecipeById(${r.id})">삭제</button>
+  </div>`;
+  go('detail')
+}
+function cooked(id){let r=recipes.find(x=>x.id===id);r.count++;r.history.unshift(new Date().toISOString().slice(0,10));r.history=r.history.slice(0,100);let t=tocook.find(x=>x.id===id);if(t)t.done=true;save();detail(id)}
+function toggleFav(id){let r=recipes.find(x=>x.id===id);r.favorite=!r.favorite;save();renderHome();renderRecipes()}
+function openEditor(id=null){
+  editId=id;
+  if(id){
+    let r=recipes.find(x=>x.id===id);
+    editorTitle.textContent='레시피 수정';
+    fName.value=r.name;
+    fCat.value=r.cat;
+    fIngredients.value=r.ingredients;
+    fSteps.value=r.steps;
+    fQuick.value='';
+    deleteBtn.style.display='block';
+  }else{
+    editorTitle.textContent='레시피 추가';
+    fName.value='';
+    fCat.value='파스타';
+    fIngredients.value='';
+    fSteps.value='';
+    fQuick.value='';
+    deleteBtn.style.display='none';
+  }
+  go('editor');
+}
+
+function organizeRecipeText(){
+  const raw=(document.getElementById('fQuick').value||'').trim();
+  if(!raw){alert('정리할 내용을 입력해주세요.');return;}
+
+  let lines=raw.split(/\r?\n/)
+    .map(x=>x.trim())
+    .filter(Boolean)
+    .map(x=>x.replace(/^[•·▪▫\-]\s*/,'').trim());
+
+  const ingredientLines=[];
+  const stepLines=[];
+  let mode='';
+  const ingredientHeader=/^(재료|준비물|재료\s*목록)\s*:?\s*$/i;
+  const stepHeader=/^(만드는\s*법|조리법|방법|순서|레시피)\s*:?\s*$/i;
+
+  const stepVerb=/(^|\s)(준비|손질|썬다|썰고|다진다|넣는다|넣고|볶는다|볶고|끓인다|삶는다|삶고|굽는다|굽고|섞는다|섞고|버무린다|버무리고|끓여|익힌다|익히고|담는다|마무리|완성|뒤집는다|뒤집고|재운다|재우고|식힌다|식히고)/;
+  const amount=/(\\d|약간|한\s*줌|한\s*스푼|한\s*큰술|한\s*작은술|한\s*컵|한\s*개|반\s*개|두\s*개|세\s*개|적당량|조금|g\b|kg\b|ml\b|L\b|큰술|작은술|컵|스푼|개|장|줄|봉|팩|마리|근)/i;
+
+  lines.forEach(line=>{
+    if(ingredientHeader.test(line)){mode='ing';return;}
+    if(stepHeader.test(line)){mode='step';return;}
+
+    // Numbered sentences are treated as cooking steps.
+    if(/^\d+\s*[.)]/.test(line)){mode='step';stepLines.push(line.replace(/^\d+\s*[.)]\s*/,'').trim());return;}
+
+    if(mode==='ing'){ingredientLines.push(line);return;}
+    if(mode==='step'){stepLines.push(line);return;}
+
+    // Without section headers, infer from wording.
+    if(stepVerb.test(line) && !amount.test(line)){
+      stepLines.push(line);
+    }else if(stepVerb.test(line) && amount.test(line)){
+      // A sentence containing both ingredients and an action is more useful as a step.
+      stepLines.push(line);
+    }else{
+      ingredientLines.push(line);
+    }
+  });
+
+  // If everything was inferred as ingredients, use sentence/period boundaries to create steps.
+  if(stepLines.length===0 && ingredientLines.length>1){
+    const joined=ingredientLines.join(' ');
+    const sentences=joined.split(/(?<=[.!?])\s+/).map(x=>x.trim()).filter(Boolean);
+    const actionSentences=sentences.filter(x=>stepVerb.test(x));
+    if(actionSentences.length){
+      stepLines.push(...actionSentences);
+      for(const s of actionSentences){
+        const i=ingredientLines.indexOf(s);
+        if(i>=0) ingredientLines.splice(i,1);
+      }
+    }
+  }
+
+  // Number steps in a consistent format.
+  const numberedSteps=stepLines.map((s,i)=>`${i+1}. ${s.replace(/^\d+\s*[.)]\s*/,'')}`);
+
+  fIngredients.value=ingredientLines.join('\n');
+  fSteps.value=numberedSteps.join('\n');
+
+  if(!fIngredients.value && !fSteps.value){
+    alert('내용을 재료나 만드는 법으로 구분하기 어려워요. 문장을 조금 더 나눠서 입력해주세요.');
+    return;
+  }
+}
+
+function saveRecipe(){let name=fName.value.trim();if(!name){alert('요리 이름을 입력해주세요.');return}if(editId){let r=recipes.find(x=>x.id===editId);Object.assign(r,{name,cat:fCat.value,ingredients:fIngredients.value,steps:fSteps.value})}else{recipes.push({id:Date.now(),name,cat:fCat.value,ingredients:fIngredients.value,steps:fSteps.value,favorite:false,count:0,history:[],created:Date.now()})}save();go('recipes');renderRecipes();renderHome()}
+function deleteRecipe(){if(editId!=null) deleteRecipeById(editId)}
+function deleteRecipeById(id){if(confirm('이 레시피를 삭제할까요?')){recipes=recipes.filter(r=>String(r.id)!==String(id));tocook=tocook.filter(t=>String(t.id)!==String(id) && String(t.recipeId)!==String(id));save();go('recipes');renderRecipes();renderHome();renderCook();renderStats()}}
+function addToCook(){
+  const input=document.getElementById('todoInput');
+  const name=(input?.value||'').trim();
+  if(!name) return;
+  if(!tocook.some(t=>t.name===name && !t.done)){
+    tocook.push({id:'todo_'+Date.now(),name,recipeId:null,done:false});
+    save();
+  }
+  input.value='';
+  renderCook();
+}
+function renderCook(){
+  let todo=tocook.filter(t=>!t.done), done=tocook.filter(t=>t.done);
+  const row=t=>`<div class="todo-row">
+    <label class="todo-main">
+      <input class="check" type="checkbox" ${t.done?'checked':''} onchange="toggleCook('${t.id}')">
+      <span>${esc(t.name || (recipes.find(r=>String(r.id)===String(t.id))?.name||''))}</span>
+    </label>
+    <button class="todo-delete" type="button" onclick="deleteCook('${t.id}')">삭제</button>
+  </div>`;
+  document.getElementById('todo').innerHTML=todo.map(row).join('')||'<div class="empty">해먹을 요리를 추가해보세요.</div>';
+  document.getElementById('cooked').innerHTML=done.map(row).join('')||'<div class="empty">아직 해먹은 요리가 없어요.</div>';
+}
+function deleteCook(id){
+  const item=tocook.find(x=>String(x.id)===String(id));
+  if(!item) return;
+  if(!confirm(`'${item.name}'을(를) 삭제할까요?`)) return;
+  tocook=tocook.filter(x=>String(x.id)!==String(id));
+  save();
+  renderCook();
+}
+function toggleCook(id){
+  let t=tocook.find(x=>String(x.id)===String(id));
+  if(!t)return;
+  t.done=!t.done; save(); renderCook();
+}
+function renderStats(){
+  let total=recipes.reduce((a,r)=>a+r.count,0), top=[...recipes].sort((a,b)=>b.count-a.count)[0];
+  let months={};
+  recipes.forEach(r=>r.history.forEach(d=>{let m=d.slice(0,7);months[m]=(months[m]||0)+1}));
+  let max=Math.max(1,...Object.values(months));
+  let catsum={};
+  recipes.forEach(r=>catsum[r.cat]=(catsum[r.cat]||0)+r.count);
+  statsBody.innerHTML=`
+    <div class="statgrid">
+      <div class="stat clickable" onclick="toggleStatDetail('history')"><small>총 요리 횟수</small><strong>${total}회</strong></div>
+      <div class="stat clickable" onclick="toggleStatDetail('recipes')"><small>레시피</small><strong>${recipes.length}개</strong></div>
+    </div>
+    <div id="statHistoryDetail" class="stat-detail"></div>
+    <div id="statRecipesDetail" class="stat-detail"></div>
+    <div class="section"><h2>가장 많이 해먹은 요리</h2><div class="card" style="margin-top:10px">${top?`${catEmoji(top.cat)} ${top.name}<div class="meta">${top.count}회</div>`:'아직 기록이 없습니다.'}</div></div>
+    <div class="section"><h2>MONTHLY</h2>${Object.entries(months).sort().reverse().map(([m,v])=>`<div class="meta" style="margin-top:12px">${m} · ${v}회<div class="bar"><i style="width:${v/max*100}%"></i></div></div>`).join('')||'<div class="empty">조리 기록이 쌓이면 월별 통계가 보여요.</div>'}</div>
+    <div class="section stats-section-gap"><h2>CATEGORY</h2>${Object.entries(catsum).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<div class="listline"><span>${catEmoji(c)} ${c}</span><span style="margin-left:auto">${v}회</span></div>`).join('')}</div>
+    <div class="section data-section stats-section-gap">
+      <div class="section-head"><h2>DATA BACKUP</h2></div>
+      <div class="data-desc">레시피, 즐겨찾기, 조리 기록, 요리 목록 등 앱의 모든 저장 데이터를 JSON 파일 하나로 백업하고 복원할 수 있어요.</div>
+      <div class="data-actions">
+        <button type="button" class="btn outline data-btn" onclick="backupAllData()">백업하기</button>
+        <button type="button" class="btn outline data-btn" onclick="document.getElementById('restoreFile').click()">복원하기</button>
+      </div>
+      <input id="restoreFile" type="file" accept="application/json,.json" hidden onchange="restoreAllData(event)">
+    </div>`;
+}
+function toggleStatDetail(type){
+  const historyBox=document.getElementById('statHistoryDetail');
+  const recipeBox=document.getElementById('statRecipesDetail');
+  const target=type==='history'?historyBox:recipeBox;
+  const other=type==='history'?recipeBox:historyBox;
+  const willOpen=!target.classList.contains('open');
+  other.classList.remove('open'); other.innerHTML='';
+  target.classList.toggle('open',willOpen);
+  if(!willOpen){target.innerHTML='';return;}
+  if(type==='history') renderHistoryDetail(target,false); else renderRecipeDetail(target);
+}
+function renderHistoryDetail(target,showAll=false){
+  const items=[];
+  recipes.forEach(r=>r.history.forEach(d=>items.push({date:d,name:r.name,id:r.id,cat:r.cat})));
+  items.sort((a,b)=>b.date.localeCompare(a.date));
+  const visible=showAll?items:items.slice(0,5);
+  target.innerHTML=`<div class="stat-detail-title">COOKING HISTORY</div>${visible.map(x=>`<div class="stat-detail-row"><button onclick="event.stopPropagation();detail(${x.id})">${esc(x.name)}</button><span class="sub">${x.date}</span></div>`).join('')||'<div class="empty">아직 조리 기록이 없어요.</div>'}${(!showAll&&items.length>5)?`<button class="stat-detail-more" onclick="event.stopPropagation();renderHistoryDetail(document.getElementById('statHistoryDetail'),true)">전체 기록 보기</button>`:''}`;
+}
+function renderRecipeDetail(target){
+  const arr=[...recipes].sort((a,b)=>a.name.localeCompare(b.name));
+  target.innerHTML=`<div class="stat-detail-title">MY RECIPES</div>${arr.map(r=>`<div class="stat-detail-row"><button onclick="event.stopPropagation();detail(${r.id})">${esc(r.name)}</button><span class="sub">${esc(r.cat)} · ${r.count}회</span></div>`).join('')||'<div class="empty">저장된 레시피가 없어요.</div>'}`;
+}
+function searchFromHome(){let q=homeSearch.value.trim();if(q){go('recipes');recipeSearch.value=q;renderRecipes()}}
+function esc(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+
+function collectAppData(){
+  const data={};
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);
+    if(key && key.startsWith('yk_')) data[key]=localStorage.getItem(key);
+  }
+  return {
+    app:'YUNAS_KITCHEN',
+    backupVersion:1,
+    exportedAt:new Date().toISOString(),
+    data
+  };
+}
+function backupAllData(){
+  try{
+    save();
+    const backup=collectAppData();
+    const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    const d=new Date();
+    const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+    a.href=url; a.download=`yunas-kitchen-backup-${y}${m}${day}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  }catch(err){
+    console.error(err);
+    alert('백업 파일을 만드는 중 문제가 생겼어요.');
+  }
+}
+function restoreAllData(event){
+  const input=event.target;
+  const file=input.files && input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const backup=JSON.parse(reader.result);
+      if(!backup || backup.app!=='YUNAS_KITCHEN' || !backup.data || typeof backup.data!=='object'){
+        throw new Error('invalid backup');
+      }
+      const keys=Object.keys(backup.data).filter(k=>k.startsWith('yk_'));
+      if(!keys.includes('yk_recipes')) throw new Error('recipes missing');
+      const recipeCheck=JSON.parse(backup.data.yk_recipes||'[]');
+      if(!Array.isArray(recipeCheck)) throw new Error('invalid recipes');
+      if(!confirm(`현재 저장된 데이터를 백업 파일의 내용으로 바꿀까요?\n\n복원 레시피: ${recipeCheck.length}개\n이 작업은 되돌릴 수 없습니다.`)){input.value='';return;}
+      [...Array(localStorage.length)].map((_,i)=>localStorage.key(i)).filter(k=>k&&k.startsWith('yk_')).forEach(k=>localStorage.removeItem(k));
+      keys.forEach(k=>{
+        const v=backup.data[k];
+        if(v!==null && v!==undefined) localStorage.setItem(k,String(v));
+      });
+      alert('복원이 완료됐어요. 앱을 다시 불러옵니다.');
+      location.reload();
+    }catch(err){
+      console.error(err);
+      alert('YUNA\'S KITCHEN 백업 파일이 아니거나 파일이 손상됐어요.');
+      input.value='';
+    }
+  };
+  reader.onerror=()=>{alert('파일을 읽지 못했어요.');input.value='';};
+  reader.readAsText(file,'utf-8');
+}
+
+history.replaceState({ykApp:true,ykPage:'home',ykDepth:0},'',location.href);
+init();
+</script>
+
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker registration failed:', err));
+  });
+}
+</script>
+</body>
+</html>
