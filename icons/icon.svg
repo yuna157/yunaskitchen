@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="108" fill="#536d87"/>
+<circle cx="256" cy="210" r="118" fill="#f6f1e8"/>
+<path d="M171 204c0-47 38-85 85-85s85 38 85 85c0 14-3 27-9 39H180c-6-12-9-25-9-39Z" fill="#ffffff"/>
+<rect x="180" y="238" width="152" height="26" rx="13" fill="#ffffff"/>
+<text x="256" y="365" text-anchor="middle" font-family="Georgia,serif" font-size="62" fill="#ffffff">YK</text>
+</svg>
