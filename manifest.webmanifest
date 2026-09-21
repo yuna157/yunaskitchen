@@ -1,0 +1,26 @@
+{
+  "name": "YUNA'S KITCHEN",
+  "short_name": "YUNA'S KITCHEN",
+  "description": "개인 레시피와 조리 기록을 관리하는 YUNA'S KITCHEN",
+  "lang": "ko-KR",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#eee9de",
+  "theme_color": "#536d87",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
