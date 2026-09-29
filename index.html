@@ -22,8 +22,8 @@
   --shadow:0 8px 24px rgba(55,67,76,.07);
 }
 *{box-sizing:border-box}
-html,body{min-height:100%}
-body{margin:0;background:#eef1f1;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
+html,body{min-height:100%;overscroll-behavior-y:auto}
+body{margin:0;min-height:calc(100dvh + 1px);overflow-x:clip;overscroll-behavior-y:auto;touch-action:pan-y;background:#eef1f1;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .app{max-width:430px;min-height:100dvh;margin:auto;background:var(--bg);position:relative;padding-bottom:82px;box-shadow:0 0 40px rgba(45,56,63,.08)}
@@ -63,10 +63,6 @@ textarea,input,select{font:inherit}.field{margin:15px 0}.field label{display:blo
 .data-desc{font-size:12px;line-height:1.7;color:var(--muted);margin:8px 0 12px}
 .data-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .data-btn{margin:0!important;padding:10px 8px!important;font-size:12px}
-/* Keep the folded home screen compact without disabling the page's native scroll.
-   Android Chrome/PWA needs the document scroller available for pull-to-refresh. */
-body.home-no-scroll{overflow-x:hidden}
-
 </style>
 
 <link rel="manifest" href="./manifest.webmanifest">
@@ -77,7 +73,7 @@ body.home-no-scroll{overflow-x:hidden}
 <meta name="apple-mobile-web-app-title" content="YUNA'S KITCHEN">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 </head>
-<body class="home-no-scroll">
+<body>
 <div class="app">
 <header><div class="brand">YUNA'S KITCHEN</div></header>
 <main>
@@ -197,7 +193,6 @@ function init(){
 function renderPage(id){
  const page=document.getElementById(id)||document.getElementById('home');
  id=page.id;
- document.body.classList.toggle('home-no-scroll',id==='home');
  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
  page.classList.add('active');
  document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));
@@ -254,8 +249,6 @@ function renderHome(){
 function toggleHomeSection(type){
   homeSectionState[type]=!homeSectionState[type];
   renderHome();
-  const anyOpen=homeSectionState.favorites||homeSectionState.all;
-  document.body.classList.toggle('home-no-scroll',!anyOpen);
 }
 function showRecipes(filter='all'){go('recipes');document.getElementById('filter').value=cats.includes(filter)?filter:'all';renderRecipes();if(filter==='favorites')document.getElementById('filter').value='all'}
 function renderRecipes(){

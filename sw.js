@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yunas-kitchen-pwa-v5';
+const CACHE_NAME = 'yunas-kitchen-pwa-v6';
 const APP_SHELL = [
   './',
   './index.html',
