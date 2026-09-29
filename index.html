@@ -63,8 +63,9 @@ textarea,input,select{font:inherit}.field{margin:15px 0}.field label{display:blo
 .data-desc{font-size:12px;line-height:1.7;color:var(--muted);margin:8px 0 12px}
 .data-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .data-btn{margin:0!important;padding:10px 8px!important;font-size:12px}
-body.home-no-scroll{height:100dvh;overflow:hidden}
-body.home-no-scroll .app{height:100dvh;min-height:100dvh;overflow:hidden}
+/* Keep the folded home screen compact without disabling the page's native scroll.
+   Android Chrome/PWA needs the document scroller available for pull-to-refresh. */
+body.home-no-scroll{overflow-x:hidden}
 
 </style>
 
@@ -156,17 +157,22 @@ const importedRecipes = [{"id":1001,"name":"7분 김치찌개","cat":"찌개","i
 const importedToCook = [{"id":"todo_1789956366258","name":"지지고","recipeId":null,"done":true},{"id":"todo_1789956369767","name":"상하이파스타","recipeId":null,"done":true},{"id":"todo_1790151598868","name":"불닭볶음탕볶이","recipeId":null,"done":true},{"id":"todo_1790205432166","name":"야끼소바(중화면)","recipeId":null,"done":true},{"id":"todo_1790260507631","name":"투도우펀","recipeId":null,"done":true},{"id":"todo_1790512967645","name":"탕화쿵푸 토마토마라탕","recipeId":null,"done":false}];
 
 // 2026-09-29 백업 복구 및 안전한 초기화
-// 잘못 배포된 v2에서만 1회 복구하고, 이후 코드 업데이트로 사용자 데이터를 덮어쓰지 않습니다.
-const RECOVERY_BAD_VERSION='recipes-backup-20260929-pwa-v2';
+// 이 목록은 과거의 잘못된 배포본이 남긴 표식만 포함합니다.
+// 이후 코드 업데이트는 기존 사용자 데이터를 절대로 덮어쓰지 않습니다.
+const RECOVERY_BAD_VERSIONS=new Set([
+  'recipes-100-20260921-pwa-v1',
+  'recipes-backup-20260929-pwa-v2'
+]);
 const SAFE_DATASET_VERSION='backup-20260929-userdata-v1';
 
 (function initializeUserDataSafely(){
-  let currentRecipes=[];
-  try{ currentRecipes=JSON.parse(localStorage.getItem('yk_recipes')||'[]')||[]; }catch(e){ currentRecipes=[]; }
+  const storedRecipes=localStorage.getItem('yk_recipes');
   const currentVersion=localStorage.getItem('yk_dataset_version');
 
-  const needsRecovery = currentVersion===RECOVERY_BAD_VERSION;
-  const needsFreshSeed = !Array.isArray(currentRecipes) || currentRecipes.length===0;
+  // A fresh install has no recipe key at all. An intentionally empty or otherwise
+  // existing recipe list is still user data and must remain untouched.
+  const needsRecovery=RECOVERY_BAD_VERSIONS.has(currentVersion);
+  const needsFreshSeed=storedRecipes===null;
 
   if(needsRecovery || needsFreshSeed){
     localStorage.setItem('yk_recipes',JSON.stringify(importedRecipes.map(r=>({...r,history:[...(r.history||[])]}))));
@@ -534,9 +540,13 @@ init();
 
 <script>
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker registration failed:', err));
-  });
+  // Bypass the browser's HTTP cache when checking the worker. Once a replacement
+  // worker takes control, reload this one page so a cold PWA launch shows its
+  // matching app shell immediately.
+  navigator.serviceWorker.addEventListener('controllerchange', () => location.reload());
+  navigator.serviceWorker.register('./sw.js', {updateViaCache:'none'})
+    .then(registration => registration.update())
+    .catch(err => console.warn('Service worker registration failed:', err));
 }
 </script>
 </body>
