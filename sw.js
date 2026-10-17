@@ -1,8 +1,9 @@
 // PWA app shell cache. This never modifies localStorage or IndexedDB.
-const CACHE_NAME = 'yunas-kitchen-pwa-v7';
+const CACHE_NAME = 'yunas-kitchen-pwa-v8';
 const APP_SHELL = [
   "./",
   "./index.html",
+  "./kitchen-splash.webp",
   "./manifest.webmanifest",
   "./icons/icon.svg"
 ];
