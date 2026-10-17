@@ -531,16 +531,6 @@ history.replaceState({ykApp:true,ykPage:'home',ykDepth:0},'',location.href);
 init();
 </script>
 
-<script>
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-  // Bypass the browser's HTTP cache when checking the worker. Once a replacement
-  // worker takes control, reload this one page so a cold PWA launch shows its
-  // matching app shell immediately.
-  navigator.serviceWorker.addEventListener('controllerchange', () => location.reload());
-  navigator.serviceWorker.register('./sw.js', {updateViaCache:'none'})
-    .then(registration => registration.update())
-    .catch(err => console.warn('Service worker registration failed:', err));
-}
-</script>
+<script src="./pwa-updater.js" data-worker="./sw.js" defer></script>
 </body>
 </html>
