@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f7f3eb">
+<meta name="theme-color" content="#fffbf2">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="./icons/dot-icon.svg" type="image/svg+xml">
 <title>YUNA'S KITCHEN</title>
 <style>
 :root{
@@ -72,7 +72,7 @@ textarea,input,select{font:inherit}.field{margin:15px 0}.field label{display:blo
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="YUNA'S KITCHEN">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
-<style id="yuna-splash-style">#yuna-splash{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#fefbf0;transition:opacity .35s ease}#yuna-splash img{display:block;width:min(100vw,470px);height:min(100dvh,835px);object-fit:contain}#yuna-splash.yuna-splash-hide{opacity:0;pointer-events:none}@media(prefers-reduced-motion:reduce){#yuna-splash{transition:none}}</style></head>
+</head>
 <body>
 <div class="app">
 <header><div class="brand">YUNA'S KITCHEN</div></header>
@@ -532,5 +532,5 @@ init();
 </script>
 
 <script src="./pwa-updater.js" data-worker="./sw.js" defer></script>
-<script id="yuna-splash-init">(function(){function show(){if(document.getElementById('yuna-splash'))return;var layer=document.createElement('div');layer.id='yuna-splash';layer.setAttribute('aria-label',"YUNA'S KITCHEN 시작 화면");layer.innerHTML='<img src="./kitchen-splash.webp" alt="YUNA\'S KITCHEN" draggable="false">';document.body.appendChild(layer);var close=function(){layer.classList.add('yuna-splash-hide');setTimeout(function(){layer.remove()},400)};setTimeout(close,1650);layer.addEventListener('click',close,{once:true})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',show,{once:true});else show()})();</script></body>
+</body>
 </html>
