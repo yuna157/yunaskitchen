@@ -1,41 +1,57 @@
-const CACHE_NAME = 'yunas-kitchen-pwa-v6';
+// PWA app shell cache. This never modifies localStorage or IndexedDB.
+const CACHE_NAME = 'yunas-kitchen-pwa-v7';
 const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icons/icon.svg'
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./icons/icon.svg"
 ];
+
 self.addEventListener('install', event => {
-  // `reload` makes a newly installed worker cache the deployed app shell rather
-  // than an HTTP-cached copy from an earlier PWA release.
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => Promise.all(
-    APP_SHELL.map(url => cache.add(new Request(url, {cache:'reload'})))
-  )));
-  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => Promise.all(
+      APP_SHELL.map(path => cache.add(new Request(path, {cache: 'reload'})))
+    ))
+  );
+  // No automatic skipWaiting on updates: ask the user before a reload.
 });
+
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
 self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(
-    keys.filter(key => key.startsWith('yunas-kitchen-pwa-') && key !== CACHE_NAME).map(key => caches.delete(key))
-  )));
-  self.clients.claim();
+  event.waitUntil(
+    caches.keys().then(keys => Promise.all(
+      keys.filter(key => key.startsWith('yunas-kitchen-pwa-') && key !== CACHE_NAME)
+        .map(key => caches.delete(key))
+    )).then(() => self.clients.claim())
+  );
 });
+
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+  const request = event.request;
+  if (request.method !== 'GET') return;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin || !url.pathname.startsWith(self.registration.scope.replace(self.location.origin, ''))) return;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(new Request(request, {cache: 'no-store'}))
+        .catch(async () => {
+          return (await caches.match('./index.html')) || (await caches.match('./')) || Response.error();
+        })
+    );
+    return;
+  }
+
   event.respondWith(
-    // Always try the network first for a document navigation. This is important
-    // for a reopened installed PWA: it must not start from an old cached index.
-    fetch(event.request.mode === 'navigate'
-      ? new Request(event.request, {cache:'no-store'})
-      : event.request
-    ).then(response => {
-      if (response.ok) {
+    fetch(request).then(response => {
+      if (response.ok && response.type === 'basic') {
         const copy = response.clone();
-        event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy)));
+        event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.put(request, copy)));
       }
       return response;
-    }).catch(() => caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return event.request.mode === 'navigate' ? caches.match('./index.html') : Response.error();
-    }))
+    }).catch(() => caches.match(request).then(cached => cached || Response.error()))
   );
 });
